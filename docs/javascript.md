@@ -22,3 +22,11 @@ setInterval(() => {
   requestAnimFrame(animloop);
 })();
 ```
+
+### 封装一个函数，参数是定时器的时间，`.then`执行回调
+
+```js
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+```
