@@ -70,3 +70,11 @@
 ```
 
 [更多](https://hamger.github.io/2017/03/09/div%E5%B1%85%E4%B8%AD/)
+
+### CSS Module
+
+CSS Modules既不是官方标准，也不是浏览器的特性，而是在构建步骤（例如使用Webpack或Browserify）中对CSS类名和选择器限定作用域的一种方式（类似于命名空间）。
+CSS Modules 只加入了局部作用域和模块依赖。
+CSS 的规则都是全局的，任何一个组件的样式规则，都对整个页面有效。CSS Modules 实现局部作用域的方法是使用一个独一无二的class的名字，不会与其他选择器重名，避免影响其他的样式。从此不在需要遵循[BEM规范](https://css-tricks.com/bem-101/)
+
+[更多](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
