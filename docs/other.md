@@ -1,13 +1,15 @@
 ### 项目性能优化
 
-* 减少 HTTP 请求数
-* 权衡减少 DNS 查询 和 多域名提供资源
-* 使用 CDN（加速、安全）
-* 图片懒加载
-* 减少 DOM 元素数量 和 DOM 操作
-* 压缩 JavaScript 、 CSS 、字体、图片等
-* 避免图片 src 为空（出现一次`<img src=”" />`会导致多一次请求）
-* 样式表放在头部，脚本放在页面底部
+- 减少 HTTP 请求数
+- 权衡减少 DNS 查询 和 多域名提供资源
+- 使用 CDN（加速、安全）
+- 图片懒加载
+- 减少 DOM 元素数量 和 DOM 操作
+- 压缩 JavaScript 、 CSS 、字体、图片等
+- 避免图片 src 为空（出现一次`<img src=”" />`会导致多一次请求）
+- 样式表放在头部，脚本放在页面底部
 
+# vue-router 跳转和 location.href 有什么区别
 
-
+vue-router 是 hash 改变，不刷新页面
+location.href 是页面跳转，刷新页面
