@@ -31,8 +31,42 @@
 
 ### 左边固定，右边自适应
 
-参见[这里](https://hamger.github.io/2018/03/15/%E5%AE%9E%E7%8E%B0%E4%B8%A4%E6%A0%8F%E5%B8%83%E5%B1%80/)
+```html
+<div class="wrapper">
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+```
+
+利用浮动和绝对定位元素脱离文档流的特性。
+
+```css
+.wrapper {
+  overflow: hidden; // 清除浮动
+}
+.left {
+  float: left; // 也可以是 position: absolute;
+}
+.right {
+  margin-left: 140px;
+}
+```
+
+[更多](https://hamger.github.io/2018/03/15/%E5%AE%9E%E7%8E%B0%E4%B8%A4%E6%A0%8F%E5%B8%83%E5%B1%80/)
 
 ### 水平垂直居中
 
-参见[这里](https://hamger.github.io/2017/03/09/div%E5%B1%85%E4%B8%AD/)
+```css
+.container {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+}
+.container div {
+  width: 100px;
+  height: 100px;
+  background-color: pink;
+}
+```
+
+[更多](https://hamger.github.io/2017/03/09/div%E5%B1%85%E4%B8%AD/)
