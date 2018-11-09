@@ -82,3 +82,31 @@ CSS 的规则都是全局的，任何一个组件的样式规则，都对整个�
 ### 模块化开发是怎么做的
 
 使用命名空间。
+
+### css 实现箭头
+
+#### 实心箭头
+例如实现一个向上的实心箭头，就是把上、左、右三条边隐藏掉（颜色设为 transparent），把先边框显示出来。
+```css
+#demo {
+  width: 0;
+  height: 0;
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent transparent red transparent;
+}
+```
+#### 空心箭头
+例如实现一个向右的空心箭头，就是把上、左边隐藏掉（border 粗细设为 0），把下、右边框显示出来，然后逆时针旋转45度。
+```css
+#demo {
+  width: 20px;
+  height: 20px;
+  border-top: 0px solid red;
+  border-left: 0px solid red;
+  border-bottom: 1px solid red;
+  border-right: 1px solid red;
+  background-color:  transparent;
+  transform: rotate(-45deg);
+}
+```
