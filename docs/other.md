@@ -8,6 +8,13 @@
 - 压缩 JavaScript 、 CSS 、字体、图片等
 - 避免图片 src 为空（出现一次`<img src="" />`会导致多一次请求）
 - 样式表放在头部，脚本放在页面底部
+- 避免使用 iframe
+
+> iframe 缺点
+
+* iframe 会阻塞主页面的 Onload 事件；
+* 搜索引擎的检索程序无法解读这种页面，不利于SEO;
+* iframe框架页面会增加服务器的http请求
 
 ### vue-router 跳转和 location.href 有什么区别
 
