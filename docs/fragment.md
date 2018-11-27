@@ -23,10 +23,90 @@ Object.setPrototypeOf(dog, prototype); // 写操作
 
 7. Object 的属性有 4 个描述起行为的特性：
 
-- Configurable:表示能否通过 delete 删除属性从而重新定义属性；
+- Configurable：表示能否通过 delete 删除属性从而重新定义属性
 - Enumerable：表示能否通过 for-in 循环返回属性
 - writable：表示能否修改属性的值
 - Value：表示这个属性的值
 
 以上四个属性在不显示调用 Object.defineProperty()的时候，前三个默认值都为 true，而 value 为你自己设定的值，如果不设定的话则为 undefined。
 
+8. ES6 规定，默认的 Iterator 接口部署在数据结构的 Symbol.iterator 属性，或者说，一个数据结构只要具有 Symbol.iterator 属性，就可以认为是“可遍历的”（iterable）。
+
+```js
+const obj = {
+  [Symbol.iterator]: function() {
+    return {
+      next: function() {
+        return {
+          value: 1,
+          done: true
+        };
+      }
+    };
+  }
+};
+```
+
+```js
+let arr = ["a", "b", "c"];
+// 数组自带 Symbol.iterator 属性
+let iter = arr[Symbol.iterator]();
+
+iter.next(); // { value: 'a', done: false }
+iter.next(); // { value: 'b', done: false }
+iter.next(); // { value: 'c', done: false }
+iter.next(); // { value: undefined, done: true }
+```
+
+9. 调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针。以后，每次调用遍历器对象的 next 方法，就会返回一个有着 value 和 done 两个属性的对象。value 属性表示当前的内部状态的值，是 yield 表达式后面那个表达式的值；done 属性是一个布尔值，表示是否遍历结束。
+
+10. yield 表达式如果用在另一个表达式之中，必须放在圆括号里面。
+
+```js
+function* demo() {
+  console.log('Hello' + yield); // SyntaxError
+  console.log('Hello' + yield 123); // SyntaxError
+
+  console.log('Hello' + (yield)); // OK
+  console.log('Hello' + (yield 123)); // OK
+}
+```
+
+11. yield 语句本身没有返回值，或者说总是返回 undefined。next()方法可以带一个参数，该参数会被当作上一条 yield 语句的返回值。
+
+```js
+function* foo(x) {
+  var y = 2 * (yield x + 1);
+  var z = yield y / 3;
+  return x + y + z;
+}
+
+var a = foo(5);
+console.log(a.next());
+console.log(a.next(12));
+console.log(a.next(13));
+```
+
+12. next()、throw()、return()这三个方法本质上是同一件事，可以放在一起理解。它们的作用都是让 Generator 函数恢复执行，并且使用不同的语句替换 yield 表达式。
+
+```js
+const g = function*(x, y) {
+  let result = yield x + y;
+  return result;
+};
+
+const gen = g(1, 2);
+gen.next(); // Object {value: 3, done: false}
+
+gen.next(1); // Object {value: 1, done: true}
+// 相当于将 let result = yield x + y
+// 替换成 let result = 1;
+
+gen.throw(new Error('出错了')); // Uncaught Error: 出错了
+// 相当于将 let result = yield x + y
+// 替换成 let result = throw(new Error('出错了'));
+
+gen.return(2); // Object {value: 2, done: true}
+// 相当于将 let result = yield x + y
+// 替换成 let result = return 2;
+```
