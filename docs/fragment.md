@@ -14,8 +14,19 @@ Object.assign([1, 2, 3], [4, 5]);
 ```
 
 6. 生成一个 dog 对象，其原型为 animal 对象。
+
 ```js
 var dog = Object.create(animal);
 Object.getPrototypeOf(dog); // 读操作
 Object.setPrototypeOf(dog, prototype); // 写操作
 ```
+
+7. Object 的属性有 4 个描述起行为的特性：
+
+- Configurable:表示能否通过 delete 删除属性从而重新定义属性；
+- Enumerable：表示能否通过 for-in 循环返回属性
+- writable：表示能否修改属性的值
+- Value：表示这个属性的值
+
+以上四个属性在不显示调用 Object.defineProperty()的时候，前三个默认值都为 true，而 value 为你自己设定的值，如果不设定的话则为 undefined。
+
