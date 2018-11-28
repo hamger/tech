@@ -72,7 +72,7 @@ function* demo() {
 }
 ```
 
-11. yield 语句本身没有返回值，或者说总是返回 undefined。next()方法可以带一个参数，该参数会被当作上一条 yield 语句的返回值。
+11. yield 语句本身没有返回值，或者说总是返回 undefined。next()方法可以带一个参数，该参数会被当作上一条 yield 语句**后面**的值。
 
 ```js
 function* foo(x) {
@@ -102,7 +102,7 @@ gen.next(1); // Object {value: 1, done: true}
 // 相当于将 let result = yield x + y
 // 替换成 let result = 1;
 
-gen.throw(new Error('出错了')); // Uncaught Error: 出错了
+gen.throw(new Error("出错了")); // Uncaught Error: 出错了
 // 相当于将 let result = yield x + y
 // 替换成 let result = throw(new Error('出错了'));
 
@@ -110,3 +110,24 @@ gen.return(2); // Object {value: 2, done: true}
 // 相当于将 let result = yield x + y
 // 替换成 let result = return 2;
 ```
+
+13. yield\*表达式，用来在一个 Generator 函数里面执行另一个 Generator 函数。
+
+```js
+function* foo() {
+  yield "a";
+  yield "b";
+}
+
+function* bar() {
+  yield "x";
+  yield* foo();
+  yield "y";
+}
+
+for (let v of bar()) {
+  console.log(v);
+}
+```
+
+14. ES2017 标准引入了 async 函数。Generator 函数的执行必须靠执行器，所以才有了 co 模块，而 async 函数自带执行器。co 模块约定，yield 命令后面只能是 Thunk 函数或 Promise 对象，而 async 函数的 await 命令后面，可以是 Promise 对象和原始类型的值。async 函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便，可以用 then 方法指定下一步的操作。
