@@ -131,3 +131,55 @@ for (let v of bar()) {
 ```
 
 14. ES2017 标准引入了 async 函数。Generator 函数的执行必须靠执行器，所以才有了 co 模块，而 async 函数自带执行器。co 模块约定，yield 命令后面只能是 Thunk 函数或 Promise 对象，而 async 函数的 await 命令后面，可以是 Promise 对象和原始类型的值。async 函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便，可以用 then 方法指定下一步的操作。
+
+15. 由于 export default 命令其实只是输出一个叫做 default 的变量，所以它后面不能跟变量声明语句（var、let、const）。
+
+16. super作为函数调用时，代表父类的构造函数，但返回的是子类的实例。super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
+```js
+class B {}
+class A extends B {
+  constructor(){
+    super();
+    this.x = 1;
+    // 写操作时，super 是子类的实例，super.x = 2 即 this.x = 2,
+    super.x = 2;
+    // 读操作时，super 是父类的原型，super.x 即 B.prototype.x
+    console.log(super.x,this.x)
+  }
+}
+new A()
+```
+
+17. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+
+```js
+// lib.js
+var counter = 3;
+function incCounter() {
+  counter++;
+}
+module.exports = {
+  counter: counter,
+  incCounter: incCounter,
+};
+
+// main.js
+var mod = require('./lib');
+
+console.log(mod.counter);  // 3
+mod.incCounter();
+console.log(mod.counter); // 3
+```
+```js
+// lib.js
+export let counter = 3;
+export function incCounter() {
+  counter++;
+}
+
+// main.js
+import { counter, incCounter } from './lib';
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+```
