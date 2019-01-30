@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --hot --config build/webpack.dev.conf.js",
     "build": "webpack --config build/webpack.prod.conf.js",
     "start": "npm run dev",
-    "docs": "docsify serve  docs"
+    "docs": "docsify serve docs"
   },
   "devDependencies": {
     "autoprefixer": "^9.0.2",

@@ -1,6 +1,6 @@
 # tech
 
-A collection of technical points in front-end.
+[A collection of technical points in front-end.](https://hamger.github.io/tech/)
 
 ## Construction
 
@@ -31,6 +31,8 @@ npm install
 npm run docs
 ```
 
+访问`http://localhost:3000`预览文档
+
 ### 本地演示
 
 ```bash
@@ -39,7 +41,7 @@ npm run dev
 
 访问`http://localhost:8080/page01`可以看到页面 A 的内容，同理可访问其他页面的内容。
 
-### 打包代码
+### 打包演示代码
 
 ```bash
 npm run build
