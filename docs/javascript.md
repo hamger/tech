@@ -60,6 +60,24 @@ function a(num) {
 }
 ```
 
+### valueOf 和 toString
+
+基本上所有的JavaScript数据类型都有valueOf()，toString()方法，null除外，这两个方法解决了JavaScript值运算和显示的问题。
+
+* valueOf() 会把数据类型转换成原始类型
+* toString() 会把数据类型转换成 string 类型
+ 
+这两个方法有意思的地方在于什么时候使用，总结如下：
+1、valueOf()偏向于运算，toString()偏向于显示
+2、对象转换时，优先调用toString()
+3、强转字符串的情况下，优先调用toString()方法；强转数字的情况下优先调用valueOf()
+4、正常情况下，优先调用toString()
+5、在有运算操作符的情况下valueOf()的优先级高于toString()，这里需要注意的是当调用valueOf()方法无法运算后还是会再调用toString()方法
+
+[more](https://www.cnblogs.com/diantao/p/6214203.html)
+
+### 
+
 ### 使用 js 实现一个持续的动画效果
 
 #### setTimeout
@@ -96,9 +114,7 @@ function sleep(time) {
 }
 ```
 
-### 数组去重
-
-[JS 数组去重](https://hamger.github.io/2017/03/11/JS%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D/)
+### [数组去重](https://hamger.github.io/2017/03/11/JS%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D/)
 
 ### 判断两个对象相等
 
