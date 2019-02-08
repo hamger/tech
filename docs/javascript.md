@@ -14,10 +14,14 @@ const T = 1000;
 
 ```js
 var throttle = function(delay, action) {
-  var last = Date.now();
+  var last = Date.now(),
+    first = true;
   return function() {
     var curr = Date.now();
-    if (curr - last > delay) {
+    if (first) { // 第一次必定执行
+      action.apply(this, arguments);
+      first = false;
+    } else if (curr - last > delay) {
       action.apply(this, arguments);
       last = curr;
     }
@@ -43,6 +47,17 @@ var debounce = function(idle, action) {
     }, idle);
   };
 };
+```
+
+### 千位分隔
+
+```js
+function a(num) {
+  var arr = String(num).split("."),
+    reg = /(?=(\B\d{3})+$)/g,
+    integer = arr[0].replace(reg, ",");
+  return arr[1] ? integer + "." + arr[1] : integer;
+}
 ```
 
 ### 使用 js 实现一个持续的动画效果
