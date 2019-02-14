@@ -51,12 +51,28 @@ var debounce = function(idle, action) {
 
 ### 千位分隔
 
+使用正则：
 ```js
-function a(num) {
-  var arr = String(num).split("."),
-    reg = /(?=(\B\d{3})+$)/g,
-    integer = arr[0].replace(reg, ",");
-  return arr[1] ? integer + "." + arr[1] : integer;
+function numFormat(num) {
+  num = num.toString().split(".");
+  var reg = /(?=(\B\d{3})+$)/g;
+  var integer = num[0].replace(reg, ",");
+  return num[1] ? integer + "." + num[1] : integer;
+}
+```
+
+不使用正则：
+```js
+function numFormat(num) {
+  num = num.toString().split(".");
+  var arr = num[0].split("").reverse();
+  var res = [];
+  for (var i = 0, len = arr.length; i < len; i++) {
+    if (i % 3 === 0 && i !== 0) res.push(",");
+    res.push(arr[i]);
+  }
+  var integer = res.reverse().join("");
+  return num[1] ? integer + "." + num[1] : integer;
 }
 ```
 
