@@ -105,3 +105,12 @@ console.log(sortarr(examplearr));
 - Session 是将数据存储在**服务端**的技术，会为每个客户端都创建一块内存空间，存储客户的数据，但客户端需要每次都携带一个标识 ID 去服务器中寻找属于自己的内存空间。所以 Session 的实现是基于 Cookie ，Session 需要借助于 Cookie 存储客户的唯一标识 session ID
 
 [more](https://blog.csdn.net/weixin_40521823/article/details/79837162)
+
+### token
+
+在客户数量比较大的情况下，使用 Session 做身份验证会有内存空间不足的隐患，使用 token 机制的身份验证方法，在服务器端不需要存储用户的登录记录。
+
+客户端使用用户名和密码请求登录。服务端收到请求，验证用户名和密码。验证成功后，服务端会生成一个 token，然后把这个 token 发送给客户端。客户端收到 token 后把它存储起来，可以放在 cookie 或者 Local Storage（本地存储）里。客户端每次向服务端发送请求的时候都需要带上服务端发给的 token。服务端收到请求，然后去验证客户端请求里面带着 token，如果验证成功，就向客户端返回请求的数据。
+生成和验证 token 的过程涉及到了加密和解密，所以是一种以时间换取空间的做法。
+
+[基于 Token 的身份验证：JWT(JSON Web Token)](https://ninghao.net/blog/2834)
