@@ -85,3 +85,13 @@ console.log(sortarr(examplearr));
 以此类推，每次将剩下数组里面最大的一个数排到最后面，最后一轮排序（i=6），只需要比较数组的第一和第二项。
 
 [其他排序](https://www.cnblogs.com/liyongshuai/p/7197962.html)
+
+### 双向绑定
+
+```js
+<input v-model="something">
+```
+以上代码其实是以下代码的语法糖：
+```js
+<input v-bind:value="something" v-on:input="something = $event.target.value">
+```
