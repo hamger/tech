@@ -80,7 +80,8 @@ function sortarr(arr) {
 }
 console.log(sortarr(examplearr));
 ```
-第一轮排序（i=0）从j=0执行到j=6，将最大的数排到了最后；
+
+第一轮排序（i=0）从 j=0 执行到 j=6，将最大的数排到了最后；
 第二轮排序（i=1），由于最大的数已经在最后了，没有必要去比较数组的最后两项，所以有`j < arr.length - 1 - i`；
 以此类推，每次将剩下数组里面最大的一个数排到最后面，最后一轮排序（i=6），只需要比较数组的第一和第二项。
 
@@ -91,7 +92,16 @@ console.log(sortarr(examplearr));
 ```js
 <input v-model="something">
 ```
+
 以上代码其实是以下代码的语法糖：
+
 ```js
 <input v-bind:value="something" v-on:input="something = $event.target.value">
 ```
+
+### cookie 与 session
+
+- Cookie 是将用户的数据存储到**客户端**的技术
+- Session 是将数据存储在**服务端**的技术，会为每个客户端都创建一块内存空间，存储客户的数据，但客户端需要每次都携带一个标识 ID 去服务器中寻找属于自己的内存空间。所以 Session 的实现是基于 Cookie ，Session 需要借助于 Cookie 存储客户的唯一标识 session ID
+
+[more](https://blog.csdn.net/weixin_40521823/article/details/79837162)
