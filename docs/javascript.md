@@ -18,7 +18,8 @@ var throttle = function(delay, action) {
     first = true;
   return function() {
     var curr = Date.now();
-    if (first) { // 第一次必定执行
+    if (first) {
+      // 第一次必定执行
       action.apply(this, arguments);
       first = false;
     } else if (curr - last > delay) {
@@ -52,6 +53,7 @@ var debounce = function(idle, action) {
 ### 千位分隔
 
 使用正则：
+
 ```js
 function numFormat(num) {
   num = num.toString().split(".");
@@ -62,6 +64,7 @@ function numFormat(num) {
 ```
 
 不使用正则：
+
 ```js
 function numFormat(num) {
   num = num.toString().split(".");
@@ -78,21 +81,21 @@ function numFormat(num) {
 
 ### valueOf 和 toString
 
-基本上所有的JavaScript数据类型都有valueOf()，toString()方法，null除外，这两个方法解决了JavaScript值运算和显示的问题。
+基本上所有的 JavaScript 数据类型都有 valueOf()，toString()方法，null 除外，这两个方法解决了 JavaScript 值运算和显示的问题。
 
-* valueOf() 会把数据类型转换成原始类型
-* toString() 会把数据类型转换成 string 类型
- 
+- valueOf() 会把数据类型转换成原始类型
+- toString() 会把数据类型转换成 string 类型
+
 这两个方法有意思的地方在于什么时候使用，总结如下：
 1、valueOf()偏向于运算，toString()偏向于显示
-2、对象转换时，优先调用toString()
-3、强转字符串的情况下，优先调用toString()方法；强转数字的情况下优先调用valueOf()
-4、正常情况下，优先调用toString()
-5、在有运算操作符的情况下valueOf()的优先级高于toString()，这里需要注意的是当调用valueOf()方法无法运算后还是会再调用toString()方法
+2、对象转换时，优先调用 toString()
+3、强转字符串的情况下，优先调用 toString()方法；强转数字的情况下优先调用 valueOf()
+4、正常情况下，优先调用 toString()
+5、在有运算操作符的情况下 valueOf()的优先级高于 toString()，这里需要注意的是当调用 valueOf()方法无法运算后还是会再调用 toString()方法
 
 [more](https://www.cnblogs.com/diantao/p/6214203.html)
 
-### 
+###
 
 ### 使用 js 实现一个持续的动画效果
 
@@ -166,3 +169,14 @@ WeakMap 支持 set(key, value) 、get(key)、has(key)、delete(key)，但不支�
     }).then(loop.bind(null, i + 1));
 })(0);
 ```
+
+### 描述对象属性行为的特性
+
+Object 的属性有 4 个描述行为的特性：
+
+- Configurable：表示能否通过 delete 删除属性从而重新定义属性
+- Enumerable：表示能否通过 for-in 循环返回属性
+- writable：表示能否修改属性的值
+- Value：表示这个属性的值
+
+以上四个属性在不显示调用 Object.defineProperty()的时候，前三个默认值都为 true，而 value 为你自己设定的值，如果不设定的话则为 undefined。
