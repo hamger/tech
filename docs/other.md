@@ -114,3 +114,10 @@ console.log(sortarr(examplearr));
 生成和验证 token 的过程涉及到了加密和解密，所以是一种以时间换取空间的做法。
 
 [基于 Token 的身份验证：JWT(JSON Web Token)](https://ninghao.net/blog/2834)
+
+### devDependencies&、dependencies、peerDependencies
+
+* dependencies 生产环境下依赖的模块，不仅开发环境能使用，生产环境也能使用
+* devDependencies 开发环境下依赖的模块，只在开发环境能使用
+* peerDependencies 指定所需要兼容的宿主包的版本，[detail](https://xwenliang.cn/p/5af2a97d5a8a996548000003)
+
