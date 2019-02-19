@@ -180,3 +180,40 @@ Object 的属性有 4 个描述行为的特性：
 - Value：表示这个属性的值
 
 以上四个属性在不显示调用 Object.defineProperty()的时候，前三个默认值都为 true，而 value 为你自己设定的值，如果不设定的话则为 undefined。
+
+### bind 多次调用
+
+bind 函数可以通过以下代码模拟：
+
+```js
+Function.prototype.bind = function(that) {
+  var _this = this,
+    slice = Array.prototype.slice,
+    args = slice.call(arguments, 1);
+  return function() {
+    return _this.apply(that, args.concat(slice.call(arguments, 0)));
+  };
+};
+```
+
+当 bind 被多次调用时，只有第一次调用生效。
+
+```js
+function foo() {
+  return this.bar;
+}
+foo = foo.bind({ bar: 1 }).bind({ bar: 2 });
+foo(); // 1
+```
+
+要想使以上代码最后输出 2 ，需要经过以下改造
+
+```js
+var functionPrototypeBind = Function.prototype.bind;
+Function.prototype.bind = function bind() {
+  var fn = typeof this.__bind__ === "function" ? this.__bind__ : this;
+  var bindfn = functionPrototypeBind.apply(fn, arguments);
+  Object.defineProperty(bindfn, "__bind__", { value: fn });
+  return bindfn;
+};
+```
