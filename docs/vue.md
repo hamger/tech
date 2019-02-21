@@ -1,6 +1,6 @@
 ### v-slot
 
-Vue 2.6 之后新增了 `v-slot` 指令，新语法将普通的插槽 (slot) 和作用域插槽 (scoped slot) 统一在一个指令语法下。
+Vue 2.6 之后新增了 `v-slot` 指令（缩写为`#`），新语法将普通的插槽 (slot) 和作用域插槽 (scoped slot) 统一在一个指令语法下。
 
 > 作用域插槽实现将子组件的数据供父组件消费
 
@@ -14,7 +14,7 @@ Vue 2.6 之后新增了 `v-slot` 指令，新语法将普通的插槽 (slot) 和
 
 ```html
 <my-component>
-  <template v-slot:header>
+  <template #header>
     <p>Header</p>
   </template>
 
@@ -23,7 +23,7 @@ Vue 2.6 之后新增了 `v-slot` 指令，新语法将普通的插槽 (slot) 和
     <p>{{ data.text }}</p>
   </template>
 
-  <template v-slot:footer>
+  <template #footer>
     <p>Footer</p>
   </template>
 </my-component>

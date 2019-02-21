@@ -128,3 +128,74 @@ console.log(sortarr(examplearr));
     "webpack": "^2.0.0"
 }
 ```
+
+### 使用 webpack 优化
+
+#### externals
+
+Webpack 可以配置 externals 来将依赖的库指向**全局变量**，从而不再打包这个库，比如
+
+```js
+module.exports = {
+  externals: {
+    react: "window.React"
+  }
+};
+```
+
+当然需要引入 react.min.js ，使 window 中存在 React 。
+
+#### webpack-parallel-uglify-plugin
+
+webpack 提供的 UglifyJS 插件采用单线程压缩，速度很慢，使用 [webpack-parallel-uglify-plugin](https://www.npmjs.com/package/webpack-parallel-uglify-plugin) 开启多线程压缩。
+
+```js
+const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
+module.exports = {
+  plugins: [new ParallelUglifyPlugin()]
+};
+```
+
+#### happypack
+
+[happypack](https://www.npmjs.com/package/happypack) 的原理是让 loader 可以多进程去处理文件，同时还利用缓存来使得 rebuild 更快。
+
+```js
+var HappyPack = require("happypack"),
+  os = require("os"),
+  happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+
+modules: {
+  loaders: [
+    {
+      test: /\.js|jsx$/,
+      loader: "HappyPack/loader?id=jsHappy",
+      exclude: /node_modules/
+    }
+  ];
+}
+
+plugins: [
+  new HappyPack({
+    id: "jsHappy",
+    cache: true,
+    threadPool: happyThreadPool,
+    loaders: [
+      {
+        path: "babel",
+        query: {
+          cacheDirectory: ".webpack_cache",
+          presets: ["es2015", "react"]
+        }
+      }
+    ]
+  }),
+  //如果有单独提取css文件的话
+  new HappyPack({
+    id: "lessHappy",
+    loaders: ["style", "css", "less"]
+  })
+];
+```
+
+#### [more](https://blog.csdn.net/kun5706947/article/details/78949038/)
