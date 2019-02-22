@@ -95,8 +95,6 @@ function numFormat(num) {
 
 [more](https://www.cnblogs.com/diantao/p/6214203.html)
 
-###
-
 ### 使用 js 实现一个持续的动画效果
 
 #### setTimeout
