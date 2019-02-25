@@ -142,7 +142,7 @@ console.log(sortarr(examplearr));
 
 4. 合理配置`resolve.extensions`，减少文件查找
 
-#### noParse
+##### noParse
 
 `module.noParse`字段告诉 Webpack 不必解析哪些文件，可以用来排除对非模块化库文件的解析
 ```js
@@ -181,3 +181,19 @@ module.exports = {
 [happypack](https://www.npmjs.com/package/happypack) 的原理是让 loader 可以多进程去处理文件，同时还利用缓存来使得 rebuild 更快。
 
 #### [more](https://juejin.im/post/5b652b036fb9a04fa01d616b)
+
+### 浏览器缓存
+
+浏览器缓存机制有两种，一种为强缓存，一种为协商缓存。
+对于强缓存，浏览器在第一次请求的时候，会直接下载资源，然后缓存在本地，第二次请求的时候，直接使用缓存。
+对于协商缓存，第一次请求缓存且保存缓存标识与时间，重复请求向服务器发送缓存标识和最后缓存时间，服务端进行校验，如果失效则使用缓存。
+
+协商缓存方案：
+
+* Exprires：服务端的响应头，第一次请求的时候，告诉客户端，该资源什么时候会过期。缺陷是必须保证服务端时间和客户端时间严格同步。
+
+* Cache-control：max-age，表示该资源多少时间后过期，解决了客户端和服务端时间必须同步的问题。
+
+* Last-modified/If-Modified-Since：都是表示时间的字符串，响应头中带 Last-modified 表明资源的修改时间，第二次请求的时候客户端带上请求头 If-Modified-Since ，表示资源上次的修改时间，服务端拿到这两个字段进行对比。
+
+* If-None-Match/ETag：都是一个标识字符串，优先级高于Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，客户端在第二次请求的时候会带上 If-None-Match 标识，服务端比较 Etag 和 If-None-Match 来看是返回 304 还是 200。
