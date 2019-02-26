@@ -144,3 +144,5 @@ console.log(sortarr(examplearr));
 * Last-modified/If-Modified-Since：都是表示时间的字符串，响应头中带 Last-modified 表明资源的修改时间，第二次请求的时候客户端带上请求头 If-Modified-Since ，表示资源上次的修改时间，服务端拿到这两个字段进行对比。
 
 * If-None-Match/ETag：都是一个标识字符串，优先级高于Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，客户端在第二次请求的时候会带上 If-None-Match 标识，服务端比较 Etag 和 If-None-Match 来看是返回 304 还是 200。
+
+[浏览器缓存机制剖析](http://louiszhai.github.io/2017/04/07/http-cache/)
