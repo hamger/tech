@@ -91,3 +91,21 @@ console.profileEnd();
 ```
 
 #### [more](https://juejin.im/post/5a41abb35188252a3d383eb8)
+
+### 项目性能优化
+
+- 减少 HTTP 请求数
+- 权衡减少 DNS 查询 和 多域名提供资源
+- 使用 CDN（加速、安全）
+- 图片懒加载
+- 减少 DOM 元素数量 和 DOM 操作
+- 压缩 JavaScript 、 CSS 、字体、图片等
+- 避免图片 src 为空（出现一次`<img src="" />`会导致多一次请求）
+- 样式表放在头部，脚本放在页面底部
+- 避免使用 iframe
+
+> iframe 缺点
+
+- iframe 会阻塞主页面的 Onload 事件；
+- 搜索引擎的检索程序无法解读这种页面，不利于 SEO;
+- iframe 框架页面会增加服务器的 http 请求
