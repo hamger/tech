@@ -128,3 +128,36 @@ console.log(sortarr(examplearr));
 * If-None-Match/ETag：都是一个标识字符串，优先级高于Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，客户端在第二次请求的时候会带上 If-None-Match 标识，服务端比较 Etag 和 If-None-Match 来看是返回 304 还是 200。
 
 [浏览器缓存机制剖析](http://louiszhai.github.io/2017/04/07/http-cache/)
+
+### 事件循环
+异步任务分为task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
+* macroTask: `requestAnimationFrame`、`setTimeout`、`setInterval`、UI render、 NodeJS中的`I/O`。
+* microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs中的`process.nextTick`。
+
+浏览器中事件循环的顺序：
+1. 执行完主执行线程中的任务。
+2. 取出Microtask Queue中任务执行直到清空。
+3. 取出Macrotask Queue中**一个**任务执行。
+4. 取出Microtask Queue中任务执行直到清空。
+5. 重复3和4。
+
+```js
+while (true) {
+  宏任务队列.shift()
+  微任务队列全部任务()
+}
+```
+
+node 环境下的执行顺序：
+```js
+while (true) {
+  loop.forEach((阶段) => {
+    阶段全部任务()
+    nextTick全部任务()
+    microTask全部任务()
+  })
+  loop = loop.next
+}
+```
+
+[more](https://segmentfault.com/a/1190000013660033?utm_source=channel-hottest)
