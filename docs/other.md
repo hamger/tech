@@ -4,11 +4,12 @@ vue-router 是 hash 改变，不刷新页面
 location.href 是页面跳转，刷新页面
 
 ### dom 解析
-chrome浏览器首先会请求 HTML 文档，然后对其中的各种资源调用相应的资源加载器进行异步网络请求，同时进行 DOM 渲染，直到遇到`<script>`标签的时候，主进程才会停止渲染，等待此资源加载完毕后调用 V8 引擎对 js 解析，继而继续进行 DOM 解析。
 
-浏览器是解析 DOM 生成 `DOM Tree`，结合 CSS 生成的 `CSS Tree`，最终组成 `render Tree`，再渲染页面。由此可见，在此过程中CSS完全无法影响 `DOM Tree`，因而无需阻塞 DOM 解析，CSS 会阻塞 `render tree` 的生成。js 需要在 css 后加载，因为脚本的内容可能是获取元素的样式，这依赖于 CSS 。
+chrome 浏览器首先会请求 HTML 文档，然后对其中的各种资源调用相应的资源加载器进行异步网络请求，同时进行 DOM 渲染，直到遇到`<script>`标签的时候，主进程才会停止渲染，等待此资源加载完毕后调用 V8 引擎对 js 解析，继而继续进行 DOM 解析。
 
-JS 会阻塞 DOM 解析，原因是，浏览器并不知道脚本的内容是什么，如果先行解析下面的 DOM ，万一脚本内全删了后面的DOM，浏览器就白干了。这导致了 CSS 变相阻塞了 DOM 解析，因为 js 需要在 css 后加载。
+浏览器是解析 DOM 生成 `DOM Tree`，结合 CSS 生成的 `CSS Tree`，最终组成 `render Tree`，再渲染页面。由此可见，在此过程中 CSS 完全无法影响 `DOM Tree`，因而无需阻塞 DOM 解析，CSS 会阻塞 `render tree` 的生成。js 需要在 css 后加载，因为脚本的内容可能是获取元素的样式，这依赖于 CSS 。
+
+JS 会阻塞 DOM 解析，原因是，浏览器并不知道脚本的内容是什么，如果先行解析下面的 DOM ，万一脚本内全删了后面的 DOM，浏览器就白干了。这导致了 CSS 变相阻塞了 DOM 解析，因为 js 需要在 css 后加载。
 
 #### 优化
 
@@ -124,52 +125,66 @@ console.log(sortarr(examplearr));
 }
 ```
 
-### 浏览器缓存
+### 浏览器缓存规则
 
-浏览器缓存机制有两种，一种为强缓存，一种为协商缓存。
-对于强缓存，浏览器在第一次请求的时候，会直接下载资源，然后缓存在本地，第二次请求的时候，直接使用缓存。
-对于协商缓存，第一次请求缓存且保存缓存标识与时间，重复请求向服务器发送缓存标识和最后缓存时间，服务端进行校验，如果失效则使用缓存。
+HTTP 缓存有多种规则，根据是否需要重新向服务器发起请求来分类，我将其分为两大类：强制缓存，协商缓存（也叫对比缓存）。
+对于强缓存，浏览器在第一次请求的时候，会直接下载资源，然后缓存在本地，第二次请求的时候，直接使用缓存，不发起 http 请求。
+对于协商缓存，第一次请求保存资源标识与时间，第二次请求向服务器发送资源标识和最后缓存时间，服务端进行校验，如果失效则返回 200 和新的资源，如果资源没有变更则返回 304 。
+
+强缓存方案：
+
+- Exprires：属于 HTTP 1.0 的内容，表示服务端返回的到期时间，缺陷是在服务端和客户端时间不同步的情况下会导致缓存命中误差。
+
+- Cache-control：常见的取值有 private、public、no-cache、max-age，no-store，默认为 private。
+
+```
+private:         客户端可以缓存
+public:          客户端和代理服务器都可以缓存
+max-age=xxx:     缓存的内容将在 xxx 秒后失效
+no-cache:        需要使用对比缓存来验证缓存数据
+no-store:        所有内容都不会缓存，强制缓存和对比缓存都不会触发
+```
 
 协商缓存方案：
 
-* Exprires：服务端的响应头，第一次请求的时候，告诉客户端，该资源什么时候会过期。缺陷是必须保证服务端时间和客户端时间严格同步。
+- Last-modified / If-Modified-Since：都是表示时间的字符串，响应头中带 Last-modified 表明资源的修改时间，第二次请求的时候客户端带上请求头 If-Modified-Since ，表示资源上次的修改时间，服务端进行对比。
 
-* Cache-control：max-age，表示该资源多少时间后过期，解决了客户端和服务端时间必须同步的问题。
+- ETag / If-None-Match：都是一个标识字符串，优先级高于 Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，第二次请求的时候客户端请求头带上 If-None-Match 标识，服务端进行对比。
 
-* Last-modified/If-Modified-Since：都是表示时间的字符串，响应头中带 Last-modified 表明资源的修改时间，第二次请求的时候客户端带上请求头 If-Modified-Since ，表示资源上次的修改时间，服务端拿到这两个字段进行对比。
-
-* If-None-Match/ETag：都是一个标识字符串，优先级高于Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，客户端在第二次请求的时候会带上 If-None-Match 标识，服务端比较 Etag 和 If-None-Match 来看是返回 304 还是 200。
-
-[浏览器缓存机制剖析](http://louiszhai.github.io/2017/04/07/http-cache/)
+[HTTP 缓存机制详解](https://juejin.im/entry/599afbe5f265da247c4ee6e3)
 
 ### 事件循环
-异步任务分为task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
-* macroTask: `requestAnimationFrame`、`setTimeout`、`setInterval`、UI render、 NodeJS中的`I/O`。
-* microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs中的`process.nextTick`。
+
+异步任务分为 task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
+
+- macroTask: `requestAnimationFrame`、`setTimeout`、`setInterval`、UI render、 NodeJS 中的`I/O`。
+- microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs 中的`process.nextTick`。
 
 浏览器中事件循环的顺序：
+
 1. 执行完主执行线程中的任务。
-2. 取出Microtask Queue中任务执行直到清空。
-3. 取出Macrotask Queue中**一个**任务执行。
-4. 取出Microtask Queue中任务执行直到清空。
-5. 重复3和4。
+2. 取出 Microtask Queue 中任务执行直到清空。
+3. 取出 Macrotask Queue 中**一个**任务执行。
+4. 取出 Microtask Queue 中任务执行直到清空。
+5. 重复 3 和 4。
 
 ```js
 while (true) {
-  宏任务队列.shift()
-  微任务队列全部任务()
+  宏任务队列.shift();
+  微任务队列全部任务();
 }
 ```
 
 node 环境下的执行顺序：
+
 ```js
 while (true) {
-  loop.forEach((阶段) => {
-    阶段全部任务()
-    nextTick全部任务()
-    microTask全部任务()
-  })
-  loop = loop.next
+  loop.forEach(阶段 => {
+    阶段全部任务();
+    nextTick全部任务();
+    microTask全部任务();
+  });
+  loop = loop.next;
 }
 ```
 
