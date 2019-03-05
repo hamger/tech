@@ -1,6 +1,3 @@
-import './index.scss'
-document.write('<h1>page01</h1>')
-
 function Promis (fn) {
   var state = 'pending',
     value = null,
@@ -14,7 +11,7 @@ function Promis (fn) {
       })
     })
   }
-
+  // pending 状态将回调推入 callbacks
   function handle (callback) {
     // 如果异步操作还没有执行完，将 callback 推入到队列中，如果执行完了，直接执行回调 callback.resolve()
     if (state === 'pending') {
@@ -45,6 +42,7 @@ function Promis (fn) {
     state = 'fulfilled'
     value = newValue
     setTimeout(function () {
+      console.log(callbacks)
       callbacks.forEach(function (callback) {
         handle(callback)
       })
@@ -75,10 +73,9 @@ var p = new Promis(function (resolve) {
     }
   ]
  */
-var p2
 p.then(function foo (value) {
   console.log(value)
-  p2 = new Promis(resolve => {
+  var p2 = new Promis(resolve => {
     setTimeout(function bar2 () {
       resolve(value * 2)
     })
@@ -87,7 +84,6 @@ p.then(function foo (value) {
 }).then(function foo2 (value) {
   console.log(value)
 })
-console.log(p2)
 // 同步代码执行完毕，接下来执行 bar 函数
 /**
  * 1. resolve(1)
