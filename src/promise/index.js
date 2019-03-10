@@ -42,10 +42,9 @@ function Promise (executor) {
 }
 
 /*
-resolvePromise函数即为根据x的值来决定promise2的状态的函数
-也即标准中的[Promise Resolution Procedure](https://promisesaplus.com/#point-47)
-x为`promise2 = promise1.then(onResolved, onRejected)`里`onResolved/onRejected`的返回值
-`resolve`和`reject`实际上是`promise2`的`executor`的两个实参，因为很难挂在其它的地方，所以一并传进来。
+resolvePromise函数即为根据x的值来决定promise2的状态的函数，
+x为`promise2 = promise1.then(onResolved, onRejected)`里`onResolved/onRejected`的返回值，
+`resolve`和`reject`实际上是`promise2`的`executor`的两个实参。
 */
 function resolvePromise (promise2, x, resolve, reject) {
   var then
@@ -89,6 +88,7 @@ function resolvePromise (promise2, x, resolve, reject) {
     resolve(x)
   }
 }
+
 // promise2 = promise1.then(onResolved, onRejected)
 function execute (promise2, val, callback, resolve, reject) {
   try {
@@ -149,8 +149,11 @@ Promise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected)
 }
 
+// 指定不管 Promise 对象最后状态如何，都会执行的操作
+// 如果不使用finally方法，同样的语句需要为成功和失败两种情况各写一次。有了finally方法，则只需要写一次。
 Promise.prototype.finally = function (fn) {
-  // 因为所有的 then 调用同步的，只要在 finally 中异步调用 then 就可以保证 fn 总是最后被调用
+  // 所有的then调用是一起的，但是这个then里调用fn又异步了一次，所以它总是在最后调用。
+  // 当然这里只能保证在已添加的函数里是最后一次。
   return this.then(
     function (v) {
       setTimeout(fn)
@@ -220,6 +223,7 @@ var p = new Promise(function (resolve) {
     resolve(1) // 改变的是 p 的状态
   }, 100)
 })
+
 p.then(function foo (value) {
   console.log(value)
   var p2 = new Promise(resolve => {
@@ -228,6 +232,8 @@ p.then(function foo (value) {
     }, 200)
   })
   return p2
+}).finally(function () {
+  console.log('finally')
 }).then(function foo2 (value) {
   console.log(value)
 })
