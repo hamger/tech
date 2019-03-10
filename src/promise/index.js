@@ -41,7 +41,12 @@ function Promise (executor) {
   }
 }
 
-// 根据 x 的值来决定 promise2（then 方法返回的 Promise 实例）的状态
+/*
+resolvePromise函数即为根据x的值来决定promise2的状态的函数
+也即标准中的[Promise Resolution Procedure](https://promisesaplus.com/#point-47)
+x为`promise2 = promise1.then(onResolved, onRejected)`里`onResolved/onRejected`的返回值
+`resolve`和`reject`实际上是`promise2`的`executor`的两个实参，因为很难挂在其它的地方，所以一并传进来。
+*/
 function resolvePromise (promise2, x, resolve, reject) {
   var then
   var thenCalledOrThrow = false
@@ -51,18 +56,10 @@ function resolvePromise (promise2, x, resolve, reject) {
   }
 
   if (x instanceof Promise) {
-    if (x.status === 'pending') {
-      // because x could resolved by a Promise Object
-      x.then(function (v) {
-        resolvePromise(promise2, v, resolve, reject)
-      }, reject)
-    } else {
-      // but if it is resolved, it will never resolved by a Promise Object but a static value;
-      x.then(resolve, reject)
-    }
+    x.then(resolve, reject)
     return
   }
-
+  // 处理 thenable 对象
   if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
     try {
       then = x.then // because x.then could be a getter
@@ -92,11 +89,11 @@ function resolvePromise (promise2, x, resolve, reject) {
     resolve(x)
   }
 }
-
-// 执行 then 中注册的回调函数，并根据回调函数的执行结果返回新的 promise
+// promise2 = promise1.then(onResolved, onRejected)
 function execute (promise2, val, callback, resolve, reject) {
   try {
     var x = callback(val)
+    // 执行回调函数 onResolved/onRejected 后，其返回值会决定 promise2 的状态和值
     resolvePromise(promise2, x, resolve, reject)
   } catch (r) {
     reject(r)
@@ -237,14 +234,9 @@ p.then(function foo (value) {
 /**
  * p.then 注册 foo ， p.then 返回 x，x.then 注册 foo2，x.then 返回 x2
  * 100ms后执行 p 的 resolve(1) ，p 的状态变更为 'resolved' 并异步触发 foo
- * foo 函数返回 p2 , 由于 p2 是 Promise 实例且处于 pending 状态，执行 p2.then(function cb (v) {
-        resolvePromise(x, v, resolve, reject) // 根据 v 的值来决定 x 的状态
-      }, reject) (此时 p2.then 注册了回调函数 cb)
- * 200ms 后执行 p2 的 resolve(value + 2) ，p2 的状态变更为 'resolved' 并异步触发 cb ，执行 resolvePromise(x, v, resolve, reject)
- * 此时 v 的值是 3 ，是原始类型，直接执行 x 的 resolve(3)，x 的状态变更为 'resolved' 并异步触发 foo2
- * 由于 v 的值作为参数传给了 foo2 ，所有最后打印出 3
- * 综上可知，x 起到一个桥梁的作用，连接当前 promise (也就是 x) 和下一个 promise (也就是 x2)，在 p2 中调用 resolve
- * 改变了 x 的状态，从而触发 x 的回调函数
+ * foo 函数返回 p2 , 由于 p2 是 Promise 实例，执行 p2.then(x_resolve, x_reject)
+ * 200ms 后执行 p2 的 resolve(value + 2) ，p2 的状态变更为 'resolved' 并异步触发 x_resolve 传入的参数是 3
+ * x 的状态变更为 'resolved' 并异步触发 foo2，最后打印出 3
  */
 
 Promise.all([
