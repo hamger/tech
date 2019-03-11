@@ -223,7 +223,6 @@ var p = new Promise(function (resolve) {
     resolve(1) // 改变的是 p 的状态
   }, 100)
 })
-
 p.then(function foo (value) {
   console.log(value)
   var p2 = new Promise(resolve => {
@@ -232,8 +231,6 @@ p.then(function foo (value) {
     }, 200)
   })
   return p2
-}).finally(function () {
-  console.log('finally')
 }).then(function foo2 (value) {
   console.log(value)
 })
