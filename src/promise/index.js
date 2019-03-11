@@ -14,6 +14,7 @@ function Promise (executor) {
       if (self.status === 'pending') {
         self.status = 'resolved'
         self.data = value
+        console.log(self.onResolvedCallback)
         for (var i = 0; i < self.onResolvedCallback.length; i++) {
           self.onResolvedCallback[i](value)
         }
@@ -265,3 +266,12 @@ Promise.all([
   .catch(function (reason) {
     console.log(reason)
   })
+
+var p3 = new Promise((resolve, reject) =>
+  setTimeout(() => {
+    resolve(new Date())
+  }, 1000)
+)
+// onResolvedCallback 是数组是因为考虑到以下情况
+var a = p3.then(a => console.log(a))
+var b = p3.then(a => console.log(a))
