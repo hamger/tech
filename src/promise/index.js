@@ -14,7 +14,6 @@ function Promise (executor) {
       if (self.status === 'pending') {
         self.status = 'resolved'
         self.data = value
-        console.log(self.onResolvedCallback)
         for (var i = 0; i < self.onResolvedCallback.length; i++) {
           self.onResolvedCallback[i](value)
         }
@@ -204,6 +203,34 @@ Promise.all = function (promises) {
   })
 }
 
+Promise.alwayResolve = function (promises) {
+  return new Promise(function (resolve, reject) {
+    var resolvedCounter = 0
+    var promiseNum = promises.length
+    var resolvedValues = new Array(promiseNum)
+    for (var i = 0; i < promiseNum; i++) {
+      ;(function (i) {
+        Promise.resolve(promises[i]).then(
+          function (value) {
+            resolvedCounter++
+            resolvedValues[i] = value
+            if (resolvedCounter === promiseNum) {
+              return resolve(resolvedValues)
+            }
+          },
+          function (reason) {
+            resolvedCounter++
+            resolvedValues[i] = reason
+            if (resolvedCounter === promiseNum) {
+              return resolve(resolvedValues)
+            }
+          }
+        )
+      })(i)
+    }
+  })
+}
+
 Promise.race = function (promises) {
   return new Promise(function (resolve, reject) {
     for (var i = 0; i < promises.length; i++) {
@@ -234,6 +261,8 @@ p.then(function foo (value) {
   return p2
 }).then(function foo2 (value) {
   console.log(value)
+}).finally(function () {
+  console.log('finally')
 })
 /**
  * p.then 注册 foo ， p.then 返回 x，x.then 注册 foo2，x.then 返回 x2
@@ -265,6 +294,27 @@ Promise.all([
   })
   .catch(function (reason) {
     console.log(reason)
+  })
+
+Promise.alwayResolve([
+  new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve(1)
+    })
+  }),
+  new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      resolve(true)
+    }, 800)
+  }),
+  new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      reject(new Error('hello'))
+    }, 500)
+  })
+])
+  .then(function (posts) {
+    console.log(posts)
   })
 
 var p3 = new Promise((resolve, reject) =>
