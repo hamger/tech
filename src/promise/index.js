@@ -181,6 +181,9 @@ Promise.reject = function (reason) {
 
 Promise.all = function (promises) {
   return new Promise(function (resolve, reject) {
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('arguments must be an array'))
+    }
     var resolvedCounter = 0
     var promiseNum = promises.length
     var resolvedValues = new Array(promiseNum)
