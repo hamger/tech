@@ -111,7 +111,7 @@ console.log(sortarr(examplearr));
 
 [基于 Token 的身份验证：JWT(JSON Web Token)](https://ninghao.net/blog/2834)
 
-### devDependencies&、dependencies、peerDependencies
+### devDependencies、dependencies、peerDependencies
 
 - dependencies 生产环境下依赖的模块，不仅开发环境能使用，生产环境也能使用
 - devDependencies 开发环境下依赖的模块，只在开发环境能使用
