@@ -2,5 +2,6 @@
 * [javascript](/javascript.md)
 * [ES2015+](/ES2015+.md)
 * [vue](/vue.md)
+* [react](/react.md)
 * [optimize](/optimize.md)
 * [other](/other.md)
