@@ -215,3 +215,17 @@ Function.prototype.bind = function bind() {
   return bindfn;
 };
 ```
+
+### new 操作符的工作原理
+
+```js
+var F = function() {};
+var p = new F();
+```
+
+1. 新建一个对象`var instance = new Object()`
+2. 设置原型链`instance.__proto__ = F.prototype`
+3. 让 F 中的 this 指向 instance，并执行 F 的函数体`F.call(instance)`
+4. 判断 F 的返回值类型：如果是值类型，就丢弃它，还是返回 instance；如果是引用类型，就返回这个引用类型的对象，替换掉 instance
+
+> 如果没有写 return，相当于`return undefined`(JavaScript 中的函数都是如此)。undefined 是值类型的，因此返回 instance。
