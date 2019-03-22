@@ -9,6 +9,18 @@ keep-alive: 父 beforeUpdate -> A deactivated -> B activated -> 父 updated
 
 > `<keep-alive></keep-alive>`用于保留组件状态或避免重新渲染，当组件在`<keep-alive>`内被切换，不触发`created`钩子，它的`activated`和`deactivated`钩子将被执行
 
+### 双向绑定
+
+```js
+<input v-model="something">
+```
+
+以上代码其实是以下代码的语法糖：
+
+```js
+<input v-bind:value="something" v-on:input="something = $event.target.value">
+```
+
 ### v-slot
 
 Vue 2.6 之后新增了 `v-slot` 指令（缩写为`#`），新语法将普通的插槽 (slot) 和作用域插槽 (scoped slot) 统一在一个指令语法下。

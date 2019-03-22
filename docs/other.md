@@ -85,18 +85,6 @@ console.log(sortarr(examplearr));
 
 [其他排序](https://www.cnblogs.com/liyongshuai/p/7197962.html)
 
-### 双向绑定
-
-```js
-<input v-model="something">
-```
-
-以上代码其实是以下代码的语法糖：
-
-```js
-<input v-bind:value="something" v-on:input="something = $event.target.value">
-```
-
 ### cookie 与 session
 
 - Cookie 是将用户的数据存储到**客户端**的技术
