@@ -6,3 +6,4 @@
 * [webpack](/webpack.md)
 * [optimize](/optimize.md)
 * [other](/other.md)
+* [open](/open.md)
