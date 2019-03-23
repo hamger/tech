@@ -93,7 +93,7 @@ function numFormat(num) {
 4、正常情况下，优先调用 toString()
 5、在有运算操作符的情况下 valueOf()的优先级高于 toString()，这里需要注意的是当调用 valueOf()方法无法运算后还是会再调用 toString()方法
 
-[more](https://www.cnblogs.com/diantao/p/6214203.html)
+[valueOf和toString的区别](https://www.cnblogs.com/diantao/p/6214203.html)
 
 ### 使用 js 实现一个持续的动画效果
 

@@ -30,6 +30,7 @@ JS 会阻塞 DOM 解析，原因是，浏览器并不知道脚本的内容是什
   - 或统一用 cssText 编辑
 
 - “离线”的批量改变和表现 DOM。
+
   - 通过 documentFragment 来保留临时变动
   - 通过 display:none 属性隐藏元素（一次重排重绘），添加足够多的变更后，通过 display 属性显示（另一次重排重绘）
   - 不频繁计算样式。通过将样式缓存在一个变量中进行计算，最后赋值给样式
@@ -48,7 +49,7 @@ JS 会阻塞 DOM 解析，原因是，浏览器并不知道脚本的内容是什
 
 另一种不太常见的垃圾回收策略是引用计数。引用计数的含义是跟踪记录每个值被引用的次数。当声明了一个变量并将一个引用类型赋值给该变量时，则这个值的引用次数就是 1。相反，如果包含对这个值引用的变量又取得了另外一个值，则这个值的引用次数就减 1。当这个引用次数变成 0 时，则说明没有办法再访问这个值了，因而就可以将其所占的内存空间给收回来。这样，垃圾收集器下次再运行时，它就会释放那些引用次数为 0 的值所占的内存。
 
-[more](https://www.cnblogs.com/zhwl/p/4664604.html)
+[JavaScript 垃圾回收机制](https://www.cnblogs.com/zhwl/p/4664604.html)
 
 ### http 与 https 的区别
 
@@ -90,7 +91,7 @@ console.log(sortarr(examplearr));
 - Cookie 是将用户的数据存储到**客户端**的技术
 - Session 是将数据存储在**服务端**的技术，会为每个客户端都创建一块内存空间，存储客户的数据，但客户端需要每次都携带一个标识 ID 去服务器中寻找属于自己的内存空间。所以 Session 的实现是基于 Cookie ，Session 需要借助于 Cookie 存储客户的唯一标识 session ID
 
-[more](https://blog.csdn.net/weixin_40521823/article/details/79837162)
+[Cookie 与 session 的区别及其常见面试问题](https://blog.csdn.net/weixin_40521823/article/details/79837162)
 
 ### token
 
@@ -178,4 +179,4 @@ while (true) {
 }
 ```
 
-[more](https://segmentfault.com/a/1190000013660033?utm_source=channel-hottest)
+[浏览器和 Node 不同的事件循环](https://segmentfault.com/a/1190000013660033?utm_source=channel-hottest)

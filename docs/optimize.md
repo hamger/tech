@@ -53,7 +53,7 @@ module.exports = {
 
 [happypack](https://www.npmjs.com/package/happypack) 的原理是让 loader 可以多进程去处理文件，同时还利用缓存来使得 rebuild 更快。
 
-#### [more](https://juejin.im/post/5b652b036fb9a04fa01d616b)
+[三十分钟掌握Webpack性能优化](https://juejin.im/post/5b652b036fb9a04fa01d616b)
 
 ### 浏览器优化
 
@@ -90,7 +90,7 @@ for(let i = 0; i < 100000; i ++){
 console.profileEnd();
 ```
 
-#### [more](https://juejin.im/post/5a41abb35188252a3d383eb8)
+[前端性能优化之性能测试](https://juejin.im/post/5a41abb35188252a3d383eb8)
 
 ### 项目性能优化
 
