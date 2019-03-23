@@ -84,7 +84,7 @@ console.log(sortarr(examplearr));
 第二轮排序（i=1），由于最大的数已经在最后了，没有必要去比较数组的最后两项，所以有`j < arr.length - 1 - i`；
 以此类推，每次将剩下数组里面最大的一个数排到最后面，最后一轮排序（i=6），只需要比较数组的第一和第二项。
 
-[其他排序](https://www.cnblogs.com/liyongshuai/p/7197962.html)
+[js十大排序算法详解](https://www.cnblogs.com/liyongshuai/p/7197962.html)
 
 ### cookie 与 session
 
