@@ -69,3 +69,7 @@ const { render, staticRenderFns } = compileToFunctions(
 ```
 
 [聊聊 Vue.js 的 template 编译](https://juejin.im/post/59da1c116fb9a00a4a4cf6dd)
+
+### vue-router 跳转和 location.href 区别
+
+vue-router 是 hash 改变，不刷新页面；location.href 是页面跳转，刷新页面
