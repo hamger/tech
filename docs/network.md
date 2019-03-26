@@ -31,3 +31,31 @@
 - 服务端推送（Server Push）：服务端推送是一种在客户端请求之前发送数据的机制
 
 [HTTP/2.0 相比 1.0 有哪些重大改进](https://www.zhihu.com/question/34074946)
+
+### HTTP 缓存
+
+HTTP 缓存有多种规则，根据是否需要重新向服务器发起请求来分类，我将其分为两大类：强制缓存，协商缓存（也叫对比缓存）。
+对于强缓存，浏览器在第一次请求的时候，会直接下载资源，然后缓存在本地，第二次请求的时候，直接使用缓存，不发起 http 请求。
+对于协商缓存，第一次请求保存资源标识与时间，第二次请求向服务器发送资源标识和最后缓存时间，服务端进行校验，如果失效则返回 200 和新的资源，如果资源没有变更则返回 304 。
+
+强缓存方案：
+
+- Exprires：属于 HTTP 1.0 的内容，表示服务端返回的到期时间，缺陷是在服务端和客户端时间不同步的情况下会导致缓存命中误差。
+
+- Cache-control：常见的取值有 private、public、no-cache、max-age，no-store，默认为 private。
+
+```
+private:         客户端可以缓存
+public:          客户端和代理服务器都可以缓存
+max-age=xxx:     缓存的内容将在 xxx 秒后失效
+no-cache:        需要使用对比缓存来验证缓存数据
+no-store:        所有内容都不会缓存，强制缓存和对比缓存都不会触发
+```
+
+协商缓存方案：
+
+- Last-modified / If-Modified-Since：都是表示时间的字符串，响应头中带 Last-modified 表明资源的修改时间，第二次请求的时候客户端带上请求头 If-Modified-Since ，表示资源上次的修改时间，服务端进行对比。
+
+- ETag / If-None-Match：都是一个标识字符串，优先级高于 Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，第二次请求的时候客户端请求头带上 If-None-Match 标识，服务端进行对比。
+
+[HTTP 缓存机制详解](https://juejin.im/entry/599afbe5f265da247c4ee6e3)
