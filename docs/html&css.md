@@ -95,11 +95,7 @@ CSS Modules 既不是官方标准，也不是浏览器的特性，而是在构�
 CSS Modules 只加入了局部作用域和模块依赖。
 CSS 的规则都是全局的，任何一个组件的样式规则，都对整个页面有效。CSS Modules 实现局部作用域的方法是使用一个独一无二的 class 的名字，不会与其他选择器重名，避免影响其他的样式。从此不在需要遵循[BEM 规范](https://css-tricks.com/bem-101/)。
 
-[更多](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
-
-### 模块化开发是怎么做的
-
-使用命名空间。
+[CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
 
 ### css 实现箭头
 
