@@ -62,12 +62,13 @@ no-store:        所有内容都不会缓存，强制缓存和对比缓存都不
 
 ### GET 与 POST 的区别
 
-GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。GET 产生一个 TCP 数据包（ header 和 data ）；POST 产生两个 TCP 数据包（先发送 header，服务器响应 100 ，再发送 data）。
+GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。
 
 - GET 参数通过 URL 传递，POST 放在 Request body 中。
 - GET 请求会被浏览器主动 cache，而 POST 不会，除非手动设置。
 - GET 请求只能进行 url 编码，而 POST 支持多种编码方式。
 - GET 请求在 URL 中传送的参数是有长度限制的，而 POST 没有。
 - 对参数的数据类型，GET 只接受 ASCII 字符，而 POST 没有限制。
+- GET 产生一个 TCP 数据包（ header 和 data ）；POST 产生两个 TCP 数据包（先发送 header，服务器响应 100 ，再发送 data）。
 
 [HTTP 中 GET 与 POST 的区别](https://mp.weixin.qq.com/s?__biz=MzI3NzIzMzg3Mw==&mid=100000054&idx=1&sn=71f6c214f3833d9ca20b9f7dcd9d33e4#rd)
