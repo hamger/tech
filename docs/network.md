@@ -59,3 +59,15 @@ no-store:        所有内容都不会缓存，强制缓存和对比缓存都不
 - ETag / If-None-Match：都是一个标识字符串，优先级高于 Last-Modified / If-Modified-Since，第一次请求的时候，服务端会返回 ETag 标识给客户端，第二次请求的时候客户端请求头带上 If-None-Match 标识，服务端进行对比。
 
 [HTTP 缓存机制详解](https://juejin.im/entry/599afbe5f265da247c4ee6e3)
+
+### GET 与 POST 的区别
+
+GET 和 POST 本质上就是 TCP 链接，并无差别。但是由于 HTTP 的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。GET 产生一个 TCP 数据包（ header 和 data ）；POST 产生两个 TCP 数据包（先发送 header，服务器响应 100 ，再发送 data）。
+
+- GET 参数通过 URL 传递，POST 放在 Request body 中。
+- GET 请求会被浏览器主动 cache，而 POST 不会，除非手动设置。
+- GET 请求只能进行 url 编码，而 POST 支持多种编码方式。
+- GET 请求在 URL 中传送的参数是有长度限制的，而 POST 没有。
+- 对参数的数据类型，GET 只接受 ASCII 字符，而 POST 没有限制。
+
+[HTTP 中 GET 与 POST 的区别](https://mp.weixin.qq.com/s?__biz=MzI3NzIzMzg3Mw==&mid=100000054&idx=1&sn=71f6c214f3833d9ca20b9f7dcd9d33e4#rd)
