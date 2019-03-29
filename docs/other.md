@@ -159,15 +159,8 @@ while (true) {
 - 易于实现按需加载
 - 避免命名冲突和污染全局变量
 
-### 1px 问题
+### 浏览器多进程架构
 
-1px 变粗的原因就在于一刀切的设置 viewport 宽度, 如果能把 viewport 宽度设置为实际的设备物理宽度, css 里的 1px 就等于实际 1px 了。 flexible.js 就是这样干的。
+浏览器内核是通过取得页面内容、整理信息（应用 CSS）、计算和组合最终输出可视化的图像结果，通常也被称为渲染引擎。Chrome 浏览器为每个 tab 页面单独启用进程，因此每个 tab 网页都有由其独立的渲染引擎实例。浏览器内核是多线程，在内核控制下各线程相互配合以保持同步，一个浏览器通常由以下常驻线程组成：GUI 渲染线程、JavaScript 引擎线程、定时触发器线程、事件触发线程、异步 http 请求线程。
 
-另一个思路是使用媒体查询，对不同的`-webkit-min-device-pixel-ratio`下的 border 进行区别处理：
-
-- (1 / n) px
-- tranform + 伪元素
-- 利用阴影(box-shadow)来模拟边框
-- 利用图片(border-image)来模拟边框
-
-[1px 边框解决方案总结](https://juejin.im/post/5af136b8f265da0b7a20a40e#heading-2)
+[浏览器进程？线程？傻傻分不清楚！](https://imweb.io/topic/58e3bfa845e5c13468f567d5)
