@@ -93,7 +93,7 @@ function numFormat(num) {
 4、正常情况下，优先调用 toString()
 5、在有运算操作符的情况下 valueOf()的优先级高于 toString()，这里需要注意的是当调用 valueOf()方法无法运算后还是会再调用 toString()方法
 
-[valueOf和toString的区别](https://www.cnblogs.com/diantao/p/6214203.html)
+[valueOf 和 toString 的区别](https://www.cnblogs.com/diantao/p/6214203.html)
 
 ### 使用 js 实现一个持续的动画效果
 
@@ -216,3 +216,9 @@ var p = new F();
 4. 判断 F 的返回值类型：如果是值类型，就丢弃它，还是返回 instance；如果是引用类型，就返回这个引用类型的对象，替换掉 instance
 
 > 如果没有写 return，相当于`return undefined`(JavaScript 中的函数都是如此)。undefined 是值类型的，因此返回 instance。
+
+### 浮点数计算不准确问题
+
+产生原因：某些数字（比如 0.1 和 0.2）转化为二进制之后，变成了一个无限循环的数字，对于无限循环的小数，计算机会进行舍入处理，因此计算时产生了误差。
+
+解决方法：把要计算的数字升级（乘以 10 的 n 次幂）成计算机能够精确识别的整数，计算完以后再降级。
