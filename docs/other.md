@@ -159,9 +159,13 @@ while (true) {
 
 ### 1px 问题
 
-- 媒体查询 + 0.5px
+1px 变粗的原因就在于一刀切的设置 viewport 宽度, 如果能把 viewport 宽度设置为实际的设备物理宽度, css 里的 1px 就等于实际 1px 了。 flexible.js 就是这样干的。
+
+另一个思路是使用媒体查询，对不同的`-webkit-min-device-pixel-ratio`下的 border 进行区别处理：
+
+- (1 / n) px
 - tranform + 伪元素
-- 利用阴影来模拟边框
-- border-image
+- 利用阴影(box-shadow)来模拟边框
+- 利用图片(border-image)来模拟边框
 
 [1px 边框解决方案总结](https://juejin.im/post/5af136b8f265da0b7a20a40e#heading-2)
