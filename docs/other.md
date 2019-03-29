@@ -156,3 +156,12 @@ while (true) {
 - 利于代码复用和功能的扩充
 - 易于实现按需加载
 - 避免命名冲突和污染全局变量
+
+### 1px 问题
+
+- 媒体查询 + 0.5px
+- tranform + 伪元素
+- 利用阴影来模拟边框
+- border-image
+
+[1px 边框解决方案总结](https://juejin.im/post/5af136b8f265da0b7a20a40e#heading-2)
