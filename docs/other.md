@@ -92,7 +92,7 @@ console.log(sortarr(examplearr));
 - devDependencies 开发环境下依赖的模块，只在开发环境能使用
 - peerDependencies 指定所需要兼容的宿主包的版本，[detail](https://xwenliang.cn/p/5af2a97d5a8a996548000003)
 
-比如我们发布了一个名字叫做 webpack-plugin-a 的插件，他只是 webpack 的一个插件，并不依赖 webpack，所以不会把 webpack 写入自身的 dependencies 或者 devDependencies，但是它又确实需要针对特定版本的 webpack 来进行开发，这时可以使用 peerDependencies 指定 webpack 的版本：
+比如我们发布了一个名字叫做 webpack-plugin-a 的插件，他只是 webpack 的一个插件，并不依赖 webpack，所以不会把 webpack 写入自身的 dependencies 或者 devDependencies，但是使用这个插件的项目需要安装指定版本的 webpack ，这时可以使用 peerDependencies 指定 webpack 的版本：
 
 ```js
 "peerDependencies": {
