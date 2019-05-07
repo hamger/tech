@@ -1,7 +1,9 @@
 ### 生命周期
 
 实例化：beforeCreate -> created -> beforeMount -> (子组件实例化时的生命周期) -> mounted
+
 更新时：父 beforeUpdate -> (如果数据通过 props 传给子组件，触发子组件更新时的生命周期) -> 父 updated
+
 销毁时：beforeDestroy -> (子组件销毁时的生命周期) -> destroyed
 keep-alive: 父 beforeUpdate -> A deactivated -> B activated -> 父 updated
 
