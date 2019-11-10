@@ -43,6 +43,21 @@ class Router extends React.Component {
 ```
 
 ### fiber
+
 在 react@16 以前的版本，reconciler（现被称为 stack reconciler ）采用自顶向下递归，从根组件或 setState() 后的组件开始，更新整个子树。当组件树越来越大，递归遍历的成本就越高，持续占用主线程，这样主线程上的布局、动画等周期性任务以及交互响应就无法立即得到处理，造成顿卡的视觉效果。为了解决这个问题，引入 fiber reconciler ，对 diff 阶段进行拆分，保证不会阻塞主线程（Main thread）。
+
+以一个 fiber 为单位来进行拆分，fiber tree 是根据 VDOM tree 构造出来的，树形结构完全一致，只是包含的信息不同。以下是 fiber tree 节点的部分结构：
+
+```js
+{
+  alternate: Fiber|null, // 在fiber更新时克隆出的镜像fiber，对fiber的修改会标记在这个fiber上
+  nextEffect: Fiber | null, // 单链表结构，方便遍历 Fiber Tree 上有副作用的节点
+  endingWorkPriority: PriorityLevel, // 标记子树上待更新任务的优先级
+	stateNode: any, // 管理 instance 自身的特性
+  return: Fiber|null, // 指向 Fiber Tree 中的父节点
+  child: Fiber|null, // 指向第一个子节点
+  sibling: Fiber|null, // 指向兄弟节点
+}
+```
 
 [怎么拆、执行顺序](https://juejin.im/post/5be969656fb9a049ad76931f)
