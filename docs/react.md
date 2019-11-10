@@ -41,3 +41,8 @@ class Router extends React.Component {
   }
 }
 ```
+
+### fiber
+在 react@16 以前的版本，reconciler（现被称为 stack reconciler ）采用自顶向下递归，从根组件或 setState() 后的组件开始，更新整个子树。当组件树越来越大，递归遍历的成本就越高，持续占用主线程，这样主线程上的布局、动画等周期性任务以及交互响应就无法立即得到处理，造成顿卡的视觉效果。为了解决这个问题，引入 fiber reconciler ，对 diff 阶段进行拆分，保证不会阻塞主线程（Main thread）。
+
+[怎么拆、执行顺序](https://juejin.im/post/5be969656fb9a049ad76931f)
