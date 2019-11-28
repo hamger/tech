@@ -72,3 +72,17 @@ class Router extends React.Component {
   运行：执行setSate时传入的callback方法；
   结束：更新isBatchingUpdates为false，并执行FLUSH_BATCHED_UPDATES这个wrapper中的close方法；
 5. FLUSH_BATCHED_UPDATES在close阶段，会循环遍历所有的dirtyComponents，调用updateComponent刷新组件，并执行它的pendingCallbacks, 也就是setState中设置的callback。
+
+### transaction（事务）
+
+事务的概念源于数据库，事务具有四个特征：原子性（ Atomicity ）、一致性（ Consistency ）、隔离性（ Isolation ）和持久性（ Durability ）。这四个特性简称为 ACID 特性。
+
+1. 原子性：事务是数据库的逻辑工作单位，不可分割，事务中包含的各操作要么都做，要么都不做
+2. 一致性：事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。
+3. 隔离性：一个事务的执行不能被其它事务干扰。
+4. 持续性：也称永久性，指一个事务一旦提交，它对数据库中的数据的改变就应该是永久性的，不能回滚。
+
+> 应用场景： A转100元给B，A账户-100，B账户必须+100
+
+
+

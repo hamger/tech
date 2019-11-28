@@ -122,6 +122,24 @@ while (true) {
 }
 ```
 
+> 如下案例
+```js
+function foo() {
+    console.error('foo');
+    Promise.resolve().then(foo)
+}
+foo();
+function bar() {
+    console.error('bar');
+    setTimeout(bar)
+}
+bar();
+
+// foo
+// bar
+// 之后都是 foo
+```
+
 node 环境下的执行顺序：
 
 ```js
