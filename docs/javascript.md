@@ -1,53 +1,36 @@
 ### 函数节流（throttle）与函数去抖（debounce）
 
-设定一个执行周期 T
+设定一个执行周期为 T，节流：当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。去抖：当调用动作 T 后，才会执行该动作，若在 T 内又调用此动作则将重新计算执行时间。
 
 ```js
-const T = 1000;
-```
-
-#### 函数节流
-
-节流：如果将水龙头拧紧直到水是以水滴的形式流出，那你会发现每隔一段时间，就会有一滴水流出。
-
-当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。
-
-```js
-var throttle = function(delay, action) {
-  var last = Date.now(),
-    first = true;
-  return function() {
-    var curr = Date.now();
-    if (first) {
-      // 第一次必定执行
-      action.apply(this, arguments);
-      first = false;
-    } else if (curr - last > delay) {
-      action.apply(this, arguments);
-      last = curr;
+function throttle (fn, times) {
+    var canRun = true
+    return function (...args) {
+        if (!canRun) return false
+        canRun = false
+        fn.apply(this, args) // 节流首次立即执行
+        setTimeout(() => {
+            canRun = true
+        }, times || 500)
     }
-  };
-};
+}
+var gn = throttle(q => {console.log(q)})
+gn(12)
+gn(12)
+// 12
 ```
-
-#### 函数去抖
-
-去抖：如果用手指一直按住一个弹簧，它将不会弹起直到你松手为止。
-
-当前后调用的时间间隔小于 T 则覆盖前一次调用，重新计算执行时间。
-
 ```js
-var debounce = function(idle, action) {
-  var timer;
-  return function() {
-    var ctx = this,
-      args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function() {
-      action.apply(ctx, args);
-    }, idle);
-  };
-};
+function debounce (fn, times) {
+    var canRun = true
+    return function (...args) {
+        if (!canRun) return false
+        canRun = false
+        setTimeout(() => {
+            fn.apply(this, args) // 去抖首次延迟执行
+            canRun = true
+        }, times || 500)
+    }
+}
 ```
 
 ### 千位分隔
