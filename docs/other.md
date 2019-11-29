@@ -102,6 +102,8 @@ console.log(sortarr(examplearr));
 
 ### 事件循环
 
+#### 浏览器中
+
 异步任务分为 task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
 
 - macroTask: `requestAnimationFrame`、`setTimeout`、`setInterval`、UI render、 NodeJS 中的`I/O`。
@@ -122,7 +124,8 @@ while (true) {
 }
 ```
 
-> 如下案例
+##### 案例
+
 ```js
 function foo() {
     console.error('foo');
@@ -140,7 +143,7 @@ bar();
 // 之后都是 foo
 ```
 
-node 环境下的执行顺序：
+#### node 环境下
 
 ```js
 while (true) {
