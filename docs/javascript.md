@@ -1,36 +1,38 @@
 ### 函数节流（throttle）与函数去抖（debounce）
 
-设定一个执行周期为 T，节流：当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。去抖：当调用动作 T 后，才会执行该动作，若在 T 内又调用此动作则将重新计算执行时间。
-
+设定一个执行周期为 T。节流：当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。
 ```js
 function throttle (fn, times) {
     var canRun = true
     return function (...args) {
         if (!canRun) return false
         canRun = false
-        fn.apply(this, args) // 节流首次立即执行
+        fn.apply(this, args)
         setTimeout(() => {
             canRun = true
         }, times || 500)
     }
 }
-var gn = throttle(q => {console.log(q)})
-gn(12)
-gn(12)
-// 12
+var tn = throttle(q => {console.log(q)})
+tn(12)
+tn(12)
+// 只输出一次： 12
 ```
+去抖：当调用动作 T 后，才会执行该动作，若在 T 内又调用此动作则重新计算执行时间。
 ```js
 function debounce (fn, times) {
-    var canRun = true
     return function (...args) {
-        if (!canRun) return false
-        canRun = false
-        setTimeout(() => {
-            fn.apply(this, args) // 去抖首次延迟执行
+        clearTimeout(timer)
+        var timer = setTimeout(() => {
+            fn.apply(this, args)
             canRun = true
         }, times || 500)
     }
 }
+var dn = debounce(q => {console.log(q)})
+dn(13)
+setTimeout(() => dn(13), 400)
+// 在 900 毫秒之后输出一次： 13 
 ```
 
 ### 千位分隔
