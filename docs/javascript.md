@@ -52,16 +52,17 @@ function numFormat(num) {
 
 ```js
 function numFormat(num) {
-  num = num.toString().split(".");
-  var arr = num[0].split("").reverse();
-  var res = [];
-  for (var i = 0, len = arr.length; i < len; i++) {
-    if (i % 3 === 0 && i !== 0) res.push(",");
-    res.push(arr[i]);
-  }
-  var integer = res.reverse().join("");
-  return num[1] ? integer + "." + num[1] : integer;
+    num = num.toString().split('.');
+    var arr = num[0].split('').reverse();
+    var res = arr.reduce((total, cur, idx) => {
+        total.push(cur)
+        if (idx !== 0 && idx % 3 === 0) total.push(',')
+        return total
+    }, [])
+    var integer = res.reverse().join('');
+    return num[1] ? integer + '.' + num[1] : integer;
 }
+console.log(numFormat(12345678.1233)) // 1,234,5678.1233
 ```
 
 ### valueOf 和 toString
