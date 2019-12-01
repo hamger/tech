@@ -23,6 +23,12 @@ keep-alive: 父 beforeUpdate -> A deactivated -> B activated -> 父 updated
 <input v-bind:value="something" v-on:input="something = $event.target.value">
 ```
 
+### 数据响应式原理
+
+1. `initState`对属性进行处理，执行`observe(data)`，内部使用`Object.defineProperty`将`data`变成可监听结构（为每一个属性中创建一个`dep`，用于管理依赖于属性的`watcher`）
+2. 执行`render`函数，触发数据的`getter`访问器，确定了数据的依赖关系，记录当前的虚拟 dom 树`$vDomTree`
+3. 当数据变化的时候，触发数据的`setter`访问器，执行`dep.notify()`，从而执行`watcher.update()`，触发`render`函数，生成新的虚拟 dom 树`vDomTree`，使用`diff`算法计算最小改动`var patches = diff(this.$vDomTree, vDomTree)`，将补丁应用到真实 dom 树`this.$el = patch(this.$el, patches)`
+
 ### v-slot
 
 Vue 2.6 之后新增了 `v-slot` 指令（缩写为`#`），新语法将普通的插槽 (slot) 和作用域插槽 (scoped slot) 统一在一个指令语法下。
