@@ -25,7 +25,6 @@ function debounce (fn, times) {
         clearTimeout(timer)
         var timer = setTimeout(() => {
             fn.apply(this, args)
-            canRun = true
         }, times || 500)
     }
 }
