@@ -128,13 +128,13 @@ while (true) {
 
 ```js
 function foo() {
-    console.error('foo');
-    Promise.resolve().then(foo)
+  console.error("foo");
+  Promise.resolve().then(foo);
 }
 foo();
 function bar() {
-    console.error('bar');
-    setTimeout(bar)
+  console.error("bar");
+  setTimeout(bar);
 }
 bar();
 

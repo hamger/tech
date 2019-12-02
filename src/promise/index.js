@@ -188,7 +188,8 @@ Promise.all = function (promises) {
     var promiseNum = promises.length
     var resolvedValues = new Array(promiseNum)
     for (var i = 0; i < promiseNum; i++) {
-      ;(function (i) {
+      ;
+      (function (i) {
         Promise.resolve(promises[i]).then(
           function (value) {
             resolvedCounter++
@@ -212,7 +213,8 @@ Promise.alwayResolve = function (promises) {
     var promiseNum = promises.length
     var resolvedValues = new Array(promiseNum)
     for (var i = 0; i < promiseNum; i++) {
-      ;(function (i) {
+      ;
+      (function (i) {
         Promise.resolve(promises[i]).then(
           function (value) {
             resolvedCounter++
@@ -248,25 +250,6 @@ Promise.race = function (promises) {
     }
   })
 }
-
-var p = new Promise(function (resolve) {
-  setTimeout(function () {
-    resolve(1) // 改变的是 p 的状态
-  }, 100)
-})
-p.then(function foo (value) {
-  console.log(value)
-  var p2 = new Promise(resolve => {
-    setTimeout(function () {
-      resolve(value + 2) // 改变的是 p2 的状态
-    }, 200)
-  })
-  return p2
-}).then(function foo2 (value) {
-  console.log(value)
-}).finally(function () {
-  console.log('finally')
-})
 /**
  * p.then 注册 foo ， p.then 返回 x，x.then 注册 foo2，x.then 返回 x2
  * 100ms后执行 p 的 resolve(1) ，p 的状态变更为 'resolved' 并异步触发 foo
@@ -320,11 +303,44 @@ Promise.alwayResolve([
     console.log(posts)
   })
 
-var p3 = new Promise((resolve, reject) =>
-  setTimeout(() => {
-    resolve(new Date())
-  }, 1000)
-)
-// onResolvedCallback 是数组是因为考虑到以下情况
-var a = p3.then(a => console.log(a))
-var b = p3.then(a => console.log(a))
+// var p3 = new Promise((resolve, reject) =>
+//   setTimeout(() => {
+//     resolve(new Date())
+//   }, 1000)
+// )
+// // onResolvedCallback 是数组是因为考虑到以下情况
+// var a = p3.then(a => console.log(a))
+// var b = p3.then(a => console.log(a))
+
+var p = new Promise(function (resolve) {
+  setTimeout(function () {
+    resolve(1) // 改变的是 p 的状态
+  }, 100)
+})
+p.then(function foo (value) {
+  console.log(value)
+  var p2 = new Promise(resolve => {
+    setTimeout(function () {
+      resolve(value + 2) // 改变的是 p2 的状态
+    }, 200)
+  })
+  return p2
+}).then(function foo2 (value) {
+  console.log(value)
+}).finally(function () {
+  console.log('finally')
+})
+
+// new Promise(resolve => {
+//   resolve(1)
+//   Promise.resolve({
+//     then: function (resolve, reject) {
+//       console.log(2)
+//       resolve(3)
+//     }
+//   }).then(t => console.log(t))
+//   console.log(4)
+// }).then(t => console.log(t))
+
+// console.log(5)
+// 2 4 5 1 3
