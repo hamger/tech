@@ -18,6 +18,8 @@ module.exports = {
     'new-cap': 0,
     'no-useless-call': 0,
     'comma-dangle': 0,
-    semi: [2, 'never']
+    'semi': [2, 'never'],
+    'no-extend-native': 0,
+    'no-trailing-spaces': 0
   }
 }

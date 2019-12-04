@@ -6,5 +6,6 @@
 * [webpack](/webpack.md)
 * [network](/network.md)
 * [optimize](/optimize.md)
+* [algorithm](/algorithm.md)
 * [other](/other.md)
 * [open](/open.md)
