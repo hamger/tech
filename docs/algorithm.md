@@ -84,3 +84,27 @@ function leftSee (node) {
 }
 console.log(leftSee(tree))
 ```
+
+### 单链表去除倒数第n项
+思路：利用**双指针解法**（前指针、后指针），让前指针先走n步，再让两个在指针同时后移，直到前指针到达尾部，此时，后指针的下一个节点就是要被删除的节点了。
+```js
+var a = { value: 'a', next: { value: 'a', next: { value: 'c', next: { value: 'd', next: null } } } }
+var removeNthFromEnd = function (head, n) {
+  let first = head, second = head
+  while (n > 0) {
+    first = first.next
+    n--
+  }
+  // 删除的是头节点
+  if (!first) return head.next
+  while (first.next) {
+    first = first.next
+    second = second.next
+  }
+  // 修改指向，即删除目标项
+  second.next = second.next.next
+  return head
+}
+console.log(removeNthFromEnd(a, 2))
+// { value: 'a', next: { value: 'a', next: { value: 'd', next: null } } }
+```

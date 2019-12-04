@@ -162,13 +162,13 @@ function leftSee (node) {
   function traveral (node) {
     var arr = []
     if (node) {
-      var que = [{ node: node, cenNo: 0 }] // 将二叉树放入队列
-      while (que.length !== 0) { // 判断队列是否为空
-        var item = que.shift() // 从队列中取出一个节点（先进先出，队列）
-        arr.push({ value: item.node.value, cenNo: item.cenNo }) // 将取出节点的值保存到数组
+      var que = [{ node: node, cenNo: 0 }]
+      while (que.length !== 0) {
+        var item = que.shift()
+        arr.push({ value: item.node.value, cenNo: item.cenNo })
         var cen = item.cenNo + 1
-        if (item.node.left) que.push({ node: item.node.left, cenNo: cen }) // 如果存在左子树，将左子树放入队列
-        if (item.node.right) que.push({ node: item.node.right, cenNo: cen }) // 如果存在右子树，将右子树放入队列
+        if (item.node.left) que.push({ node: item.node.left, cenNo: cen })
+        if (item.node.right) que.push({ node: item.node.right, cenNo: cen })
       }
     }
     return arr
@@ -184,3 +184,26 @@ function leftSee (node) {
   return res
 }
 console.log(leftSee(tree))
+
+console.log('↓---单链表去除倒数第n项---↓')
+var a = { value: 'a', next: { value: 'a', next: { value: 'c', next: { value: 'd', next: null } } } }
+
+// 思路：利用双指针解法（前指针、后指针），让前指针先走n步，再让两个在指针同时后移，直到前指针到达尾部，此时，后指针的下一个节点就是要被删除的节点了。
+
+var removeNthFromEnd = function (head, n) {
+  let first = head, second = head
+  while (n > 0) {
+    first = first.next
+    n--
+  }
+  // 删除的是头节点
+  if (!first) return head.next
+  while (first.next) {
+    first = first.next
+    second = second.next
+  }
+  // 修改指向，即删除目标项
+  second.next = second.next.next
+  return head
+}
+console.log(removeNthFromEnd(a, 2))
