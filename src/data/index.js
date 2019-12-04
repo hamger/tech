@@ -155,8 +155,32 @@ var breadthTraversal = function (node) {
 }
 console.log(breadthTraversal(tree))
 
+console.log('↓---从左往右看二叉树---↓')
 // 衍生题，从左往右看二叉树，求看到的字母。思路：将二叉树分层，每层最左边的字母，就是能不看到的字母，提到分层从而想到广度遍历
-var res = []
 function leftSee (node) {
-
+  var res = []
+  function traveral (node) {
+    var arr = []
+    if (node) {
+      var que = [{ node: node, cenNo: 0 }] // 将二叉树放入队列
+      while (que.length !== 0) { // 判断队列是否为空
+        var item = que.shift() // 从队列中取出一个节点（先进先出，队列）
+        arr.push({ value: item.node.value, cenNo: item.cenNo }) // 将取出节点的值保存到数组
+        var cen = item.cenNo + 1
+        if (item.node.left) que.push({ node: item.node.left, cenNo: cen }) // 如果存在左子树，将左子树放入队列
+        if (item.node.right) que.push({ node: item.node.right, cenNo: cen }) // 如果存在右子树，将右子树放入队列
+      }
+    }
+    return arr
+  }
+  var temp = traveral(node)
+  var no = 0
+  for (var i = 0; i < temp.length; i++) {
+    if (no === temp[i].cenNo) {
+      res.push(temp[i].value)
+      no++
+    }
+  }
+  return res
 }
+console.log(leftSee(tree))

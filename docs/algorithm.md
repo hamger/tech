@@ -6,29 +6,16 @@
 // 深度遍历
 var preOrderRec = function (node) {
   var arr = []
-  if (node) {
-    arr.push(node.value) // 前序遍历
-    preOrderRec(node.left)
-    preOrderRec(node.right)
+  function _fn (node) {
+    if (node) {
+      arr.push(node.value) // 前序遍历
+      _fn(node.left)
+      // arr.push(node.value) // 中序遍历
+      _fn(node.right)
+      // arr.push(node.value) // 后序遍历
+    }
   }
-  return arr
-}
-var inOrderRec = function (node) {
-     var arr = []
-  if (node) {
-    inOrderRec(node.left)
-    arr.push(node.value) // 中序遍历
-    inOrderRec(node.right)
-  }
-  return arr
-}
-var postOrderRec = function (node) {
-    var arr = []
-  if (node) {
-    postOrderRec(node.left)
-    postOrderRec(node.right)
-    arr.push(node.value) // 后序遍历
-  }
+  _fn(node)
   return arr
 }
 ```
@@ -65,4 +52,35 @@ var breadthTraversal = function (node) {
         }
     }
 }
+```
+#### 从左往右看二叉树
+衍生题：从左往右看二叉树，求看到的字母。思路：将二叉树分层，每层最左边的字母，就是能不看到的字母，提到分层从而想到广度遍历，在广度遍历中加入层数信息，最后遍历得到数组，取出每层的第一个。
+```js
+function leftSee (node) {
+  var res = []
+  function traveral (node) {
+    var arr = []
+    if (node) {
+      var que = [{ node: node, cenNo: 0 }]
+      while (que.length !== 0) {
+        var item = que.shift()
+        arr.push({ value: item.node.value, cenNo: item.cenNo })
+        var cen = item.cenNo + 1
+        if (item.node.left) que.push({ node: item.node.left, cenNo: cen })
+        if (item.node.right) que.push({ node: item.node.right, cenNo: cen })
+      }
+    }
+    return arr
+  }
+  var temp = traveral(node)
+  var no = 0 // 层数
+  for (var i = 0; i < temp.length; i++) {
+    if (no === temp[i].cenNo) {
+      res.push(temp[i].value)
+      no++
+    }
+  }
+  return res
+}
+console.log(leftSee(tree))
 ```
