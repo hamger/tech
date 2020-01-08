@@ -22,35 +22,36 @@ var preOrderRec = function (node) {
 深度遍历使用递归来写更简洁，本质上是利用了栈的数据结构，所有递归都可以使用栈来写，以下用先序遍历为例：
 ```js
 // 先序遍历-非递归版本
-var preListUnRec = []
 var preOrderUnRecursion = function (node) {
+  var arr = [] // 定义保存先序遍历结果的数组
   if (node) {
     var stack = [node] // 将二叉树压入栈
     while (stack.length !== 0) { // 如果栈不为空，则循环遍历
       node = stack.pop() // 从栈中取出一个节点(先进后出，是栈)
-      preListUnRec.push(node.value) // 将取出节点的值存入数组中
-      // 因为栈是先进后出的，想要先获得左节点的值，则先把右节点压入栈中 
+      arr.push(node.value) // 将取出节点的值存入数组中
+      // 因为栈是先进后出，想要先获得左节点的值，就应该先把右节点压入栈中 
       if (node.right) stack.push(node.right) // 如果存在右子树，将右子树压入栈
       if (node.left) stack.push(node.left) // 如果存在左子树，将左子树压入栈
     }
   }
+  return arr
 }
 ```
 深度遍历采用**栈**，广度遍历采用**队列**。
 ```js
 // 广度遍历
-var breadthList = []
 var breadthTraversal = function (node) {
-    if (node) {
-        var stack = [node]
-        while(stack.length !== 0) {
-            node = stack.shift() // 从队列中取出一个节点(先进先出，是队列)
-            breadthList.push(node.value)
-            // 因为队列是先进先出的，想要先获得左节点的值，则先把左节点推入队列中 
-            if (node.left) stack.push(node.left)
-            if (node.right) stack.push(node.right)
-        }
+  var arr = [] // 定义保存广度遍历结果的数组
+  if (node) { // 判断二叉树是否为空
+    var que = [node] // 将二叉树放入队列
+    while (que.length !== 0) { // 判断队列是否为空
+      node = que.shift() // 从队列中取出一个节点（先进先出，队列）
+      arr.push(node.value) // 将取出节点的值保存到数组
+      if (node.left) que.push(node.left) // 如果存在左子树，将左子树放入队列
+      if (node.right) que.push(node.right) // 如果存在右子树，将右子树放入队列
     }
+  }
+  return arr
 }
 ```
 #### 从左往右看二叉树
