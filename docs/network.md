@@ -13,10 +13,12 @@
 > 数据通过网络从 A 端到 B 端依次经过了：A 端的应用层、传输层、网络层、链路层（每通过一层增加首部），B 端的链路层、网络层、传输层、应用层（每通过一层删除首部）。
 
 #### 三次握手
-
 1. 客户端 -> SYN=1, seq=x -> 服务端
 2. 服务端 -> SYN=1, ACK=1, seq=y, ack=x+1 -> 客户端
 3. 客户端 -> ACK=1, seq=x+1, ack=y+1 -> 服务端
+
+> seq(sequence number):表示的是发送方的，packet 的数据部分的第一位应该在整个data stream 中所在的位置
+> ack(acknowledge number):表示的是期望的接收方的下一次 sequence number 是多少。
 
 #### 四次挥手
 1. 客户端 -> FIN=1, seq=u -> 服务端
