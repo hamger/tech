@@ -143,6 +143,10 @@ bar();
 // 之后都是 foo
 ```
 
+> 关于 setTimeout 要补充的是，即便主线程为空，0毫秒实际上也是达不到的。根据 HTML 的标准，最低是4毫秒。
+
+[彻底弄懂 JavaScript 执行机制](https://juejin.im/post/6844903512845860872#heading-1)
+
 #### node 环境下
 
 ```js
