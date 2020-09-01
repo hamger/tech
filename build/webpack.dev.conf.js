@@ -20,7 +20,8 @@ var webpackConfig = {
     rules: [
       {
         test: /.js$/,
-        loaders: ['babel-loader', 'eslint-loader'],
+        loaders: ['babel-loader'],
+        // loaders: ['babel-loader', 'eslint-loader'],
         include: [path.resolve(__dirname, '../src')]
       },
       {
