@@ -6,7 +6,7 @@
 
 销毁时：componentWillUnmount -> (子组件销毁时的生命周期)
 
-> setState 只可以在 componentWillReceiveProps 调用，[不合适或无意义或禁止在其他生命周期调用](http://varnull.cn/set-state-in-react-component-life-cycle/)。
+> 以上为 v16 版本的生命周期，v17 版本中将移除componentWillMount，componentWillReceiveProps，componentWillUpdate
 
 ### react-router 原理
 
@@ -50,13 +50,13 @@ class Router extends React.Component {
 
 ```js
 {
-  alternate: Fiber|null, // 在fiber更新时克隆出的镜像fiber，对fiber的修改会标记在这个fiber上
-  nextEffect: Fiber | null, // 单链表结构，方便遍历 Fiber Tree 上有副作用的节点
-  endingWorkPriority: PriorityLevel, // 标记子树上待更新任务的优先级
-	stateNode: any, // 管理 instance 自身的特性
+  alternate: Fiber|null, // diff后差异信息
   return: Fiber|null, // 指向 Fiber Tree 中的父节点
   child: Fiber|null, // 指向第一个子节点
   sibling: Fiber|null, // 指向兄弟节点
+  endingWorkPriority: PriorityLevel, // 标记子树上待更新任务的优先级
+	stateNode: any, // 管理 instance 自身的特性
+  nextEffect: Fiber | null, // 单链表结构，方便遍历 Fiber Tree 上有副作用的节点
 }
 ```
 

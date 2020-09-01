@@ -144,7 +144,12 @@ function sleep(time) {
 }
 ```
 
-### [数组去重](https://hamger.github.io/2017/03/11/JS%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D/)
+### 数组去重
+```js
+function dedupe(arr) {
+    return [...new Set(arr)]
+}
+```
 
 ### 判断两个对象相等
 

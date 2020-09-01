@@ -100,6 +100,7 @@ console.profileEnd();
 - 图片懒加载
 - 减少 DOM 元素数量 和 DOM 操作
 - 压缩 JavaScript 、 CSS 、字体、图片等
+- 把图标合并在同一张图片里面，用 background-position 去控制
 - 避免图片 src 为空（出现一次`<img src="" />`会导致多一次请求）
 - 样式表放在头部，脚本放在页面底部
 - 避免使用 iframe

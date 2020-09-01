@@ -20,7 +20,12 @@
 npm install
 ```
 
-### 文档展示
+### 本地预览文档
+需要先安装`docsify-cli`
+```
+npm i docsify-cli -g
+```
+安装完成后执行以下命令
 ```
 npm run docs
 ```
