@@ -116,38 +116,20 @@ console.log(permute([1, 2, 3]))
 
 // 组合求和
 function combinationSum(candidates, target) {
-	var arr = []
+	var res = []
 	// 降序排列
 	var source = candidates.sort((a, b) => b - a)
-	var long = source.length
-	function backtrack(track, tag) {
-		if (tag.rest === 0 && tag.index === long - 1) {
-			// 需要克隆结果，避免引用类型的影响
-			arr.push(JSON.parse(JSON.stringify(track)))
+	var n = source.length
+	function helper(i, tmp_sum, tmp) {
+		if (tmp_sum > target || i == n) return
+		if (tmp_sum === target) {
+			res.push(tmp)
 			return
 		}
-		for (let i = 0; i < source.length; i++) {
-			var num = source[i]
-			// 排除在路径里的选择
-			if (track.indexOf(num) > -1) {
-				continue
-			}
-			var c = Math.floor(tag.rest / num) // 个数
-			var d = tag.rest % num // 余数
-			var tmp = new Array(c).fill(num)
-			var len = track.length
-			track.push(...tmp)
-			backtrack(track, {
-				rest: d,
-				index: i
-			})
-			track.splice(len, c)
-		}
+		helper(i,  tmp_sum + candidates[i],tmp + [candidates[i]])
+		helper(i+1, tmp_sum ,tmp)
 	}
-	backtrack([], {
-		rest: target,
-		idnex: 0
-	})
-	return arr
+    helper(0, 0, [])
+	return res
 };
 console.log(combinationSum([2, 3, 6, 7], 7))
