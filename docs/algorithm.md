@@ -110,6 +110,83 @@ function leftSee (node) {
 }
 console.log(leftSee(tree))
 ```
+### 多叉树遍历
+多叉树递归遍历模板如下：
+```js
+function traverseNode (node) {
+  if (!node) return
+  if (node.children && node.children.length > 0) {
+      for (let i = 0; i < node.children.length; i++) {
+          // 前序遍历需要的操作
+          this.traverseTree(node.children[i]);
+          // 后序遍历需要的操作
+      }
+  }
+}
+```
+
+### 回溯算法
+回溯算法核心概念：
+* 路径：记录已经做过的选择
+* 选择列表：当前可以选择的选项
+* 结束条件：选择列表为空的时候
+
+回溯算法核心框架：
+```js
+// nums：选择列表；track：路径；
+function backtrack (nums, track) {
+  // 终止条件 与 操作
+  for (var i = 0;i < nums.length;i++) {
+    // 排除已经在路径里的选择
+    if (track.indexOf(nums[i]) > -1) continue
+    track.push(nums[i]) //  路径.add(选择)
+    backtrack(nums, track)
+    track.pop() // 路径.remove(选择)
+  }
+}
+```
+
+#### 求全排列
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+```js
+实例:
+输入: [1,2,3]
+输出:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+```
+基于回溯算法，函数编写如下
+```js
+function permute (arr) {
+	var res = []
+	// nums：选择；track：路径；
+	function backtrack (nums, track) {
+		if (track.length === nums.length) {
+			// 需要克隆结果，避免引用类型的影响
+			res.push(JSON.parse(JSON.stringify(track)))
+			return
+		}
+		for (var i = 0;i < nums.length;i++) {
+			// 排除在路径里的选择
+			if (track.indexOf(nums[i]) > -1) {
+				continue
+			} 
+			track.push(nums[i])
+			backtrack(nums, track)
+			track.pop()
+		}
+	}
+	backtrack(arr, [])
+	return res
+}
+permute([1,2,3])
+```
 
 ### 单链表去除倒数第n项
 思路：利用**双指针解法**（前指针、后指针），让前指针先走n步，再让两个在指针同时后移，直到前指针到达尾部，此时，后指针的下一个节点就是要被删除的节点了。
