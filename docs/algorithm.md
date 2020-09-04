@@ -1,3 +1,28 @@
+### 冒泡排序
+
+```js
+var examplearr = [8, 94, 15, 88, 55, 76, 21, 39];
+function sortarr(arr) {
+  for (i = 0; i < arr.length - 1; i++) {
+    for (j = 0; j < arr.length - 1 - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        var temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
+}
+console.log(sortarr(examplearr));
+```
+
+第一轮排序（i=0）从 j=0 执行到 j=6，将最大的数排到了最后；
+第二轮排序（i=1），由于最大的数已经在最后了，没有必要去比较数组的最后两项，所以有`j < arr.length - 1 - i`；
+以此类推，每次将剩下数组里面最大的一个数排到最后面，最后一轮排序（i=6），只需要比较数组的第一和第二项。
+
+[js 十大排序算法详解](https://www.cnblogs.com/liyongshuai/p/7197962.html)
+
 ### 二叉树的遍历
 
 二叉树的遍历可以分为深度遍历和广度遍历， 深度遍历有前序、中序和后序三种遍历方法。 广度遍历就是层次遍历。
