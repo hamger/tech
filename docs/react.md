@@ -13,7 +13,7 @@ react 生命周期分为三个阶段：挂载、更新、卸载。v16.3之前和
 #### v16.4
 挂载：constructor -> getDerivedStateFromProps -> componentWillMount -> render -> (子组件实例化时的生命周期) -> componentDidMount
 
-更新：getDerivedStateFromProps -> shouldComponentUpdate -> componentWillUpdate -> render -> (子组件存在期的生命周期) -> getSnapshotBeforeUpdate -> componentDidUpdate
+更新：getDerivedStateFromProps -> shouldComponentUpdate -> render -> (子组件存在期的生命周期) -> getSnapshotBeforeUpdate -> componentDidUpdate
 
 卸载：componentWillUnmount -> (子组件销毁时的生命周期)
 

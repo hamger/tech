@@ -150,3 +150,25 @@ CSS 的规则都是全局的，任何一个组件的样式规则，都对整个�
 - 利用图片(border-image)来模拟边框
 
 [1px 边框解决方案总结](https://juejin.im/post/5af136b8f265da0b7a20a40e#heading-2)
+
+
+### 自定义元素的属性
+以前自定义元素的属性要通过`user-defined-attribute="value"`的方式来设置自己需要的属性：
+```html
+<div id="myDiv" user-defined-attribute="value">在标签里设置自定义属性</div>
+```
+使用`getAttribute`来获取自定义属性的值：
+```js
+document.getElementById("myDiv").getAttribute("user-defined-attribute")
+```
+
+现在H5为我们提供了一个data属性 **"data-"** 作为前缀，可以让所有的HTML元素都支持自定义的属性。
+```html
+<div id="myDiv" data-attribute="value">在标签里设置H5新增的自定义属性</div>
+```
+获取自定义属性（使用H5自定义属性对象Dataset来获取）
+```js
+var myDiv = document.getElementById("myDiv");
+var theValue = myDiv.dataset;    //DOMStringMap对象
+console.log(theValue.attribute);
+```

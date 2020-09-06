@@ -133,3 +133,18 @@ function combinationSum(candidates, target) {
 	return res
 };
 console.log(combinationSum([2, 3, 6, 7], 7))
+
+function curry(fn, ...arg) {
+    var _arg = [].concat(arg)
+    var len = fn.length
+    
+    return function _fn(...arg2) {
+        _arg.push(...arg2)
+        if (_arg.length === len) {
+            return fn.apply(this, _arg)
+        } else {
+            return _fn
+        }
+
+    }
+}

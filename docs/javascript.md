@@ -166,20 +166,6 @@ function dedupe(arr) {
 JSON.stringify(obj) == JSON.stringify(obj2);
 ```
 
-### 只使用 promise，实现循环中串行执行
-
-```js
-(function loop(i) {
-  if (i < 10)
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(i);
-        resolve();
-      }, Math.random() * 1000);
-    }).then(loop.bind(null, i + 1));
-})(0);
-```
-
 ### 描述对象属性行为的特性
 
 Object 的属性有 4 个描述行为的特性：
