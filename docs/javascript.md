@@ -206,7 +206,7 @@ Function.prototype.bind = function(that) {
 };
 ```
 
-当 bind 被多次调用时，只有第一次调用生效。
+当 bind 被多次调用时，只有第一次调用生效。 `bind()`相当于使用函数在内部包了一个 `call / apply` ，第二次 `bind()` 相当于再包住第一次 `bind()`，故第二次以后的 bind 是无法生效的。
 
 ```js
 function foo() {

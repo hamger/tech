@@ -1,12 +1,25 @@
 ### 生命周期
+react 生命周期分为三个阶段：挂载、更新、卸载。v16.3之前和v16.4之后的生命周期不同。
 
-实例化：getDefaultProps -> getInitialState -> componentWillMount -> render -> (子组件实例化时的生命周期) -> componentDidMount(服务端没有)
+#### v16.3
+挂载：constructor -> componentWillMount -> render -> (子组件实例化时的生命周期) -> componentDidMount(服务端没有)
 
-存在期：componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> render -> (子组件存在期的生命周期) -> componentDidUpdate
+更新：componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> render -> (子组件存在期的生命周期) -> componentDidUpdate
 
-销毁时：componentWillUnmount -> (子组件销毁时的生命周期)
+卸载：componentWillUnmount -> (子组件销毁时的生命周期)
 
-> 以上为 v16 版本的生命周期，v17 版本中将移除componentWillMount，componentWillReceiveProps，componentWillUpdate
+> 为不安全的生命周期引入别名：UNSAFE_componentWillMount、UNSAFE_componentWillReceiveProps 和 UNSAFE_componentWillUpdate。
+
+#### v16.4
+挂载：constructor -> getDerivedStateFromProps -> componentWillMount -> render -> (子组件实例化时的生命周期) -> componentDidMount
+
+更新：getDerivedStateFromProps -> shouldComponentUpdate -> componentWillUpdate -> render -> (子组件存在期的生命周期) -> getSnapshotBeforeUpdate -> componentDidUpdate
+
+卸载：componentWillUnmount -> (子组件销毁时的生命周期)
+
+错误处理，当渲染过程，生命周期，或子组件的构造函数中抛出错误时，会调用如下方法：getDerivedStateFromError -> componentDidCatch
+
+> v17 版本中将移除componentWillMount，componentWillReceiveProps，componentWillUpdate
 
 ### react-router 原理
 
