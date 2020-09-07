@@ -120,3 +120,55 @@ const { render, staticRenderFns } = compileToFunctions(
 ### vue-router 跳转和 location.href 区别
 
 vue-router 是 hash 改变，不刷新页面；location.href 是页面跳转，刷新页面
+
+### 简述 diff 算法
+`diff(oldTree, newTree)` 算法最后生成一个补丁`patches`（`patches`是带元素id的对象数组，补丁类型分为四类：REPLACE（替换元素）、ORDER（列表排序）、PROPS（变更属性）、TEXT（变更文本）），该补丁会通过调用`patch(root, patches)`应用到真实 dom 树中。
+
+记旧虚拟树为`oldTree`、新虚拟树为`newTree`、补丁为`patches`、当前补丁为`currentPatch`。开始用以下顺序比较`oldTree`和`newTree`：
+
+判断`isString(oldNode) && isString(newNode)) && new Node !== oldNode`， 为真则` currentPatch.push({type: 'TEXT',text: newNode})`
+
+判断`oldNode.tagName === newNode.tagName && oldNode.key === newNode.key`，为否则`currentPatch.push{type:'REPLACE',node: newNode})`，为真则先比较元素的属性`var propsPatches = diffProps(oldNode, newNode)`，若`propsPatches`为真则`currentPatch.push({type: 'PROPS',props: propsPatches})`，然后比较他们的子元素，其中会设置涉及到列表的比较`listDiff`
+```js
+diffChildren(
+  oldNode.children,
+  newNode.children,
+  index,
+  patches,
+  currentPatch
+) {
+  // oldchildren 和 newchildren 为数组
+  var diffs = listDiff(oldChildren, newChildren, 'key')
+  newChildren = diffs.children
+
+  if (diffs.moves.length) {
+    currentPatch.push({
+      type: 'ORDER',
+      moves: diffs.moves
+    })
+  }
+
+  var leftNode = null
+  var currentNodeIndex = index
+  oldChildren.forEach((child, i) => {
+    var newChild = newChildren[i]
+    // 计算当前节点标记，区分左边的节点是否拥有子节点的情况
+    currentNodeIndex =
+      leftNode && leftNode.count ?
+        currentNodeIndex + leftNode.count + 1 :
+        currentNodeIndex + 1
+    // 深度遍历子节点
+    walk(child, newChild, currentNodeIndex, patches)
+    // 更新左边的节点
+    leftNode = child
+  })
+}
+```
+如果`listDiff`返回的结果中存在排序信息则`currentPatch.push({type: 'ORDER',moves: diffs.moves})`，
+遍历`oldChildren`，计算节点标记，递归遍历子节点`walk(child, newChild, currentNodeIndex, patches)`，直到遍历完所有节点，过程中所有的补丁信息都被保存在`patches`中。
+```js
+if (currentPatch.length) {
+  patches[index] = currentPatch
+}
+```
+[详解vue的diff算法](https://juejin.im/post/6844903607913938951)
