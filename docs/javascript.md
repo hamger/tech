@@ -202,14 +202,13 @@ foo = foo.bind({ bar: 1 }).bind({ bar: 2 });
 foo(); // 1
 ```
 
-要想使以上代码最后输出 2 ，需要经过以下改造
-
+要想使以上代码最后输出 2 ，需要经过以下改造，原理是添加一个指向初始函数的指针`__bind__`，在多次调用`bind()`时，`apply()`的第一个参数始终为初始函数
 ```js
 var functionPrototypeBind = Function.prototype.bind;
 Function.prototype.bind = function bind() {
   var fn = typeof this.__bind__ === "function" ? this.__bind__ : this;
   var bindfn = functionPrototypeBind.apply(fn, arguments);
-  Object.defineProperty(bindfn, "__bind__", { value: fn });
+  bindfn.__bind__ = fn
   return bindfn;
 };
 ```

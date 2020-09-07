@@ -91,56 +91,58 @@
 // console.log(num, obj.num)
 
 function permute(arr) {
-	var res = []
-	// nums：选择；track：路径；
-	function backtrack(nums, track) {
-		if (track.length === nums.length) {
-			// 需要克隆结果，避免引用类型的影响
-			res.push(JSON.parse(JSON.stringify(track)))
-			return
-		}
-		for (var i = 0; i < nums.length; i++) {
-			// 排除在路径里的选择
-			if (track.indexOf(nums[i]) > -1) {
-				continue
-			}
-			track.push(nums[i])
-			backtrack(nums, track)
-			track.pop()
-		}
-	}
-	backtrack(arr, [])
-	return res
+    var res = []
+    // nums：选择；track：路径；
+    function backtrack(nums, track) {
+        if (track.length === nums.length) {
+            // 需要克隆结果，避免引用类型的影响
+            res.push(JSON.parse(JSON.stringify(track)))
+            return
+        }
+        for (var i = 0; i < nums.length; i++) {
+            // 排除在路径里的选择
+            if (track.indexOf(nums[i]) > -1) {
+                continue
+            }
+            track.push(nums[i])
+            backtrack(nums, track)
+            track.pop()
+        }
+    }
+    backtrack(arr, [])
+    return res
 }
 console.log(permute([1, 2, 3]))
 
 // 组合求和
 function combinationSum(candidates, target) {
-	var res = []
-	// 降序排列
-	var source = candidates.sort((a, b) => b - a)
-	var n = source.length
-	function helper(i, tmp_sum, tmp) {
-		if (tmp_sum > target || i == n) return
-		if (tmp_sum === target) {
-			res.push(tmp)
-			return
-		}
-		helper(i,  tmp_sum + candidates[i],tmp + [candidates[i]])
-		helper(i+1, tmp_sum ,tmp)
-	}
+    var res = []
+    // 降序排列
+    var source = candidates.sort((a, b) => b - a)
+    var n = source.length
+    function helper(i, tmp_sum, tmp) {
+        if (tmp_sum > target || i == n) return
+        if (tmp_sum === target) {
+            res.push(tmp)
+            return
+        }
+        helper(i, tmp_sum + candidates[i], tmp + [candidates[i]])
+        helper(i + 1, tmp_sum, tmp)
+    }
     helper(0, 0, [])
-	return res
+    return res
 };
 console.log(combinationSum([2, 3, 6, 7], 7))
 
+// 固定参数的柯里化
 function curry(fn, ...arg) {
     var _arg = [].concat(arg)
     var len = fn.length
-    
+
     return function _fn(...arg2) {
         _arg.push(...arg2)
         if (_arg.length === len) {
+        // if (arg2.length === 0) { // 不定参数的柯里化
             return fn.apply(this, _arg)
         } else {
             return _fn
@@ -148,3 +150,32 @@ function curry(fn, ...arg) {
 
     }
 }
+// 不定参数的柯里化
+function curry(fn) {
+  // 保存预置参数
+  const presetArgs = [].slice.call(arguments, 1)
+  // 返回一个新函数
+  function curried () {
+    // 新函数调用时会继续传参
+    const restArgs = [].slice.call(arguments)
+    const allArgs = [...presetArgs, ...restArgs]
+    return curry.call(null, fn, ...allArgs)
+  }
+  // 重写toString
+  curried.toString = function() {
+    return fn.apply(null, presetArgs)
+  }
+  return curried;
+}
+
+var f1 = async function (params) {
+    console.log('f1') // 2
+    await f()
+    console.log('f2') // 5
+}
+function f() {
+    console.log('f') // 3
+}
+console.log('FB') // 1
+f1() 
+console.log('FE') // 4

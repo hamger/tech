@@ -2,10 +2,10 @@
 
 实例化：beforeCreate -> created -> beforeMount -> (子组件实例化时的生命周期) -> mounted
 
-更新时：父 beforeUpdate -> (如果数据通过 props 传给子组件，触发子组件更新时的生命周期) -> 父 updated
+更新时：beforeUpdate -> (如果数据通过 props 传给子组件，触发子组件更新时的生命周期) -> updated
+keep-alive更新时: beforeUpdate -> A deactivated -> B activated -> updated
 
 销毁时：beforeDestroy -> (子组件销毁时的生命周期) -> destroyed
-keep-alive: 父 beforeUpdate -> A deactivated -> B activated -> 父 updated
 
 > 修改没有在模板中被使用的数据时，不会触发`beforeUpdate`和`updated`钩子
 
@@ -25,9 +25,48 @@ keep-alive: 父 beforeUpdate -> A deactivated -> B activated -> 父 updated
 
 ### 数据响应式原理
 
-1. `initState`对属性进行处理，执行`observe(data)`，内部使用`Object.defineProperty`将`data`变成可监听结构（为每一个属性中创建一个`dep`，用于管理依赖于属性的`watcher`）
-2. 执行`render`函数，触发数据的`getter`访问器，确定了数据的依赖关系，记录当前的虚拟 dom 树`$vDomTree`
-3. 当数据变化的时候，触发数据的`setter`访问器，执行`dep.notify()`，从而执行`watcher.update()`，触发`render`函数，生成新的虚拟 dom 树`vDomTree`，使用`diff`算法计算最小改动`var patches = diff(this.$vDomTree, vDomTree)`，将补丁应用到真实 dom 树`this.$el = patch(this.$el, patches)`
+1. `initState`对属性进行处理，执行`observe(data)`，内部使用`Object.defineProperty`将`data`变成可监听结构（data 的 property 全部转为 getter/setter，为每一个属性中创建一个`dep`，用于管理依赖于属性的`watcher`），getter 中的代码逻辑是调用`dep.depend()`，添加 watcher 到 dep.watchers，添加 dep 到 watcher.deps。setter 中的代码逻辑是调用`dep.notify()`。
+
+2. 初始化时会执行`render`函数，此时会触发对应属性的`getter`访问器，收集数据和模板之间的依赖关系，并记录当前的虚拟 dom 树`$vDomTree`
+
+3. 当`data`变化时，触发对应属性的`setter`访问器，执行`dep.notify()`，从而执行`watcher.update()`，触发`render`函数，生成新的虚拟 dom 树`vDomTree`，使用`diff`算法计算最小改动`var patches = diff(this.$vDomTree, vDomTree)`，将补丁应用到真实 dom 树`this.$el = patch(this.$el, patches)`
+
+```js
+export default class Dep {
+  static target?: Watcher
+  id: number
+  watchers: Array<Watcher>
+
+  constructor() {
+    this.id = id++
+    this.watchers = []
+  }
+
+  addWatcher(watcher: Watcher) {
+    this.watchers.push(watcher)
+  }
+
+  removeWatcher(watcher: Watcher) {
+    remove(this.watchers, watcher)
+  }
+
+  depend() {
+    if (Dep.target) {
+      Dep.target.addDep(this)
+    }
+  }
+
+  notify() {
+    this.watchers.forEach(watcher => {
+      watcher.update()
+    })
+  }
+}
+```
+
+> 这些 getter/setter 对用户来说是不可见的，但是在内部它们让 Vue 能够追踪依赖，在 property 被访问和修改时通知变更。
+
+> 每个组件实例都对应一个 watcher 实例，它会在组件渲染的过程中把“接触”过的数据 property 记录为依赖。之后当依赖项的 setter 触发时，会通知 watcher，从而使它关联的组件重新渲染。
 
 ### v-slot
 
