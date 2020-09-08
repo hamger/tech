@@ -11,15 +11,19 @@ react 生命周期分为三个阶段：挂载、更新、卸载。v16.3之前和
 > 为不安全的生命周期引入别名：UNSAFE_componentWillMount、UNSAFE_componentWillReceiveProps 和 UNSAFE_componentWillUpdate。
 
 #### v16.4
-挂载：constructor -> getDerivedStateFromProps -> componentWillMount -> render -> (子组件实例化时的生命周期) -> componentDidMount
+挂载：constructor -> getDerivedStateFromProps -> render -> (子组件实例化时的生命周期) -> componentDidMount
 
-更新：getDerivedStateFromProps -> shouldComponentUpdate -> render -> (子组件存在期的生命周期) -> getSnapshotBeforeUpdate -> componentDidUpdate
+更新：getDerivedStateFromProps -> shouldComponentUpdate -> render -> (子组件存在期的生命周期) -> l -> componentDidUpdate
 
 卸载：componentWillUnmount -> (子组件销毁时的生命周期)
 
 错误处理，当渲染过程，生命周期，或子组件的构造函数中抛出错误时，会调用如下方法：getDerivedStateFromError -> componentDidCatch
 
 > v17 版本中将移除componentWillMount，componentWillReceiveProps，componentWillUpdate
+
+> getDerivedStateFromProps(props, state) 是静态方法，在组件创建时和更新时的render方法之前调用，它应该返回一个对象来更新状态，或者返回null来不更新任何内容。
+
+> getSnapshotBeforeUpdate() 被调用于render之后，可以读取但无法使用DOM的时候。它使您的组件可以在可能更改之前从DOM捕获一些信息（例如滚动位置）。此生命周期返回的任何值都将作为参数传递给componentDidUpdate()。
 
 ### react-router 原理
 
