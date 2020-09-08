@@ -81,15 +81,15 @@
 
 异步任务分为 task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
 
-- macroTask: `requestAnimationFrame`、`setTimeout`、`setInterval`、UI render、 NodeJS 中的`I/O`。
+- macroTask: `script(整体代码)`、`requestAnimationFrame`、`setTimeout`、`setInterval`、 `postMessage`、`async` 函数未完成的部分、UI render、 NodeJS 中的`I/O`。
 - microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs 中的`process.nextTick`。
 
 浏览器中事件循环的顺序：
 
-1. 执行完主执行线程中的任务。
-2. 取出 Microtask Queue 中任务执行直到清空。
-3. 取出 Macrotask Queue 中**一个**任务执行。
-4. 取出 Microtask Queue 中任务执行直到清空。
+1. 执行完主执行线程中的同步代码。
+2. 取出微任务队列中任务执行直到清空。
+3. 取出宏任务队列中**一个**任务执行。
+4. 取出微任务队列中任务执行直到清空。
 5. 重复 3 和 4。
 
 ```js
@@ -98,6 +98,8 @@ while (true) {
   微任务队列全部任务();
 }
 ```
+
+> 在 node 11 版本中，node 下 Event Loop 已经与浏览器趋于相同。
 
 ##### 案例
 
@@ -119,23 +121,6 @@ bar();
 ```
 
 > 关于 setTimeout 要补充的是，即便主线程为空，0毫秒实际上也是达不到的。根据 HTML 的标准，最低是4毫秒。
-
-[彻底弄懂 JavaScript 执行机制](https://juejin.im/post/6844903512845860872#heading-1)
-
-#### node 环境下
-
-```js
-while (true) {
-  loop.forEach(阶段 => {
-    阶段全部任务();
-    nextTick全部任务();
-    microTask全部任务();
-  });
-  loop = loop.next;
-}
-```
-
-[浏览器和 Node 不同的事件循环](https://segmentfault.com/a/1190000013660033?utm_source=channel-hottest)
 
 ### 常见的编程范式
 
