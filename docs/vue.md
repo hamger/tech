@@ -126,9 +126,19 @@ vue-router 是 hash 改变，不刷新页面；location.href 是页面跳转，�
 
 记旧虚拟树为`oldTree`、新虚拟树为`newTree`、补丁为`patches`、当前补丁为`currentPatch`。开始用以下顺序比较`oldTree`和`newTree`：
 
-判断`isString(oldNode) && isString(newNode)) && new Node !== oldNode`， 为真则` currentPatch.push({type: 'TEXT',text: newNode})`
+1. 判断两个节点是否值得比较，为否则`currentPatch.push{type:'REPLACE',node: newNode})`，为真则进行以下逻辑
+```js
+function sameVnode (oldTree, newTree) {
+  return (
+    oldTree.key === newTree.key &&  // key值
+    oldTree.tag === newTree.tag  // 标签名
+  )
+}
+```
 
-判断`oldNode.tagName === newNode.tagName && oldNode.key === newNode.key`，为否则`currentPatch.push{type:'REPLACE',node: newNode})`，为真则先比较元素的属性`var propsPatches = diffProps(oldNode, newNode)`，若`propsPatches`为真则`currentPatch.push({type: 'PROPS',props: propsPatches})`，然后比较他们的子元素，其中会设置涉及到列表的比较`listDiff`
+2. 判断是否是文本节点`isString(oldNode) && isString(newNode)) && new Node !== oldNode`， 为真则`currentPatch.push({type: 'TEXT',text: newNode})`，为否则进行以下逻辑
+
+3. 比较元素的属性`var propsPatches = diffProps(oldNode, newNode)`，若`propsPatches`为真则`currentPatch.push({type: 'PROPS',props: propsPatches})`，然后比较他们的子元素，其中会设置涉及到列表的比较`listDiff`
 ```js
 diffChildren(
   oldNode.children,
@@ -171,4 +181,9 @@ if (currentPatch.length) {
   patches[index] = currentPatch
 }
 ```
-[详解vue的diff算法](https://juejin.im/post/6844903607913938951)
+
+#### 列表比较
+
+[vue 的 listDiff](https://juejin.im/post/6844903607913938951) : 双端比对算法
+
+[react 的 listDiff](https://zhuanlan.zhihu.com/p/20346379) :  单指针从左到右
