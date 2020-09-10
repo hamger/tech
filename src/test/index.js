@@ -44,26 +44,26 @@
 //  * @param {number} k
 //  * @return {number[][]}
 //  */
-// var combine = function (n, k) {
-//     var res = []
-//     var selects = new Array(n).fill(1).map((item, index) => index)
-//     function dfs(path, selects) {
-//         if (path.length === k) {
-//             res.push(JSON.parse(JSON.stringify(path)))
-//             return
-//         }
-//         selects.forEach((item, index) => {
-//             path.push(item)
-//             var temp = JSON.parse(JSON.stringify(selects))
-//             temp.splice(index, 1)
-//             dfs(path, temp)
-//             path.pop()
-//         })
-//     }
-//     dfs([], selects)
-//     return res
-// };
-// console.log(combine(4, 2))
+var combine = function (n, k) {
+    var res = []
+    var selects = new Array(n).fill(1).map((item, index) => index)
+    function dfs(path, selects) {
+        if (path.length === k) {
+            res.push(JSON.parse(JSON.stringify(path)))
+            return
+        }
+        selects.forEach((item, index) => {
+            path.push(item)
+            dfs(path, selects.filter((item, index2) => {
+                return index2 !== index
+            }))
+            path.pop()
+        })
+    }
+    dfs([], selects)
+    return res
+};
+console.log(combine(4, 2))
 
 const listData = [
     { id: 1001, parentId: 0, name: 'AA' },
@@ -84,34 +84,22 @@ function printTree(list) {
         if (!list || list.length === 0) return
         if (tree.length === 0) {
             var roots = list.filter(item => item.parentId === 0).map(item => {
-                item.cenNo = 0
+                item.layerNo = 0
                 return item
             })
             tree.push(...roots)
         }
         tree.forEach(node => {
-            var qianzhui = new Array(node.cenNo).fill('&nbsp;')
+            var qianzhui = new Array(node.layerNo).fill('&nbsp;')
             console.log(`${qianzhui.join('')}${node.name}`)
             var childrens = list.filter(item => item.parentId === node.id)
             node.children = childrens.map(item => {
-                item.cenNo = node.cenNo + 1
+                item.layerNo = node.layerNo + 1
                 return item
             })
             if (node.children.length > 0) getTree(list.filter(item => item.parentId !== node.id), node.children)
         })
     }
     getTree(list, tree)
-    // console.log(tree)
-    // function printText(tree) {
-    //     if (!tree || tree.length === 0) return
-    //     tree.forEach(node => {
-    //         var qianzhui = new Array(node.cenNo).fill('&nbsp;')
-    //         console.log(`${qianzhui.join('')}${node.name}`)
-    //         if (node.children && node.children.length > 0) {
-    //             printText(node.children)
-    //         }
-    //     })
-    // }
-    // printText(tree)
 }
 printTree(listData)
