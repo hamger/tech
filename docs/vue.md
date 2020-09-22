@@ -121,6 +121,13 @@ const { render, staticRenderFns } = compileToFunctions(
 
 vue-router 是 hash 改变，不刷新页面；location.href 是页面跳转，刷新页面
 
+### Proxy 比 Object.defineProperty 的优势
+* Proxy 可以直接监听对象而非属性
+* Proxy 可以直接监听数组的变化
+* Proxy 有多达13种拦截方法
+* Proxy 作为新标准受到浏览器厂商重点持续的性能优化
+* Proxy 的劣势就是兼容性问题
+
 ### 简述 diff 算法
 `diff(oldTree, newTree)` 算法最后生成一个补丁`patches`（`patches`是带元素id的对象数组，补丁类型分为四类：REPLACE（替换元素）、ORDER（列表排序）、PROPS（变更属性）、TEXT（变更文本）），该补丁会通过调用`patch(root, patches)`应用到真实 dom 树中。
 
