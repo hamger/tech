@@ -114,26 +114,32 @@ function traverseNode (node) {
 ```
 
 ### 回溯算法
-回溯算法核心概念：
-* 路径：记录已经做过的选择
-* 选择列表：当前可以选择的选项
-* 结束条件：选择列表为空的时候
-
-回溯算法核心框架：
+回溯算法三要素：
+* 路径：也就是已经做出的选择。
+* 选择列表：也就是你当前可以做的选择。
+* 结束条件：也就是到达决策树底层，无法再做选择的条件。
 ```js
-// nums：选择列表；track：路径；
-function backtrack (nums, track) {
-  // 终止条件 与 操作
-  for (var i = 0;i < nums.length;i++) {
-    // 排除已经在路径里的选择
-    if (track.indexOf(nums[i]) > -1) continue
-    track.push(nums[i]) //  路径.add(选择)
-    backtrack(nums, track)
-    track.pop() // 路径.remove(选择)
-  }
+function getResult(sel, target) {
+    var res = []
+    // 路径：path，选择列表：selects
+    function backtrack(path, selects) {
+        if (满足结束条件) { // 和 target 有关的结束条件
+            res.push(JSON.parse(JSON.stringify(path)))
+            return
+        }
+        selects.forEach((select, index) => {
+            path.push(select) // 做选择
+            // 修正选择后的选择列表，递归
+            var temp = JSON.parse(JSON.stringify(selects))
+            temp.splice(index, 1)
+            backtrack(path, tmp)
+            path.pop() // 撤销选择
+        });
+    }
+    backtrack([], sel)
+    return res
 }
 ```
-
 #### 求全排列
 给定一个没有重复数字的序列，返回其所有可能的全排列。
 ```js
@@ -198,34 +204,4 @@ var removeNthFromEnd = function (head, n) {
 }
 console.log(removeNthFromEnd(a, 2))
 // { value: 'a', next: { value: 'a', next: { value: 'd', next: null } } }
-```
-
-### 回溯算法
-回溯算法三要素：
-* 路径：也就是已经做出的选择。
-* 选择列表：也就是你当前可以做的选择。
-* 结束条件：也就是到达决策树底层，无法再做选择的条件。
-```js
-function getResult(sel, k) {
-    var res = []
-    // 路径：path，选择列表：selects
-    function backtrack(path, selects) {
-        if (满足结束条件) {
-            res.push(JSON.parse(JSON.stringify(path)))
-            return
-        }
-        selects.forEach((select, index) => {
-            // 做选择
-            path.push(select)
-            var temp = JSON.parse(JSON.stringify(selects))
-            temp.splice(index, 1)
-            dfs(path, temp)
-            backtrack(path, tmp)
-            // 撤销选择
-            path.pop()
-        });
-    }
-    backtrack([], sel)
-    return res
-}
 ```
