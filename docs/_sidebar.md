@@ -7,5 +7,6 @@
 * [network](/network.md)
 * [optimize](/optimize.md)
 * [algorithm](/algorithm.md)
+* [save](/save.md)
 * [other](/other.md)
 * [open](/open.md)
