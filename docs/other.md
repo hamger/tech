@@ -120,51 +120,56 @@ bar();
 // 之后都是 foo
 ```
 
-> 关于 setTimeout 要补充的是，即便主线程为空，0毫秒实际上也是达不到的。根据 HTML 的标准，最低是4毫秒。
+> 关于 setTimeout 要补充的是，即便主线程为空，0 毫秒实际上也是达不到的。根据 HTML 的标准，最低是 4 毫秒。
 
 #### 例子二
+
 ```js
 var p = new Promise((resolve, reject) => {
-  resolve('hello_6')
-  console.log('1')
-})
+  resolve("hello_6");
+  console.log("1");
+});
 
-function hello () {
-  console.log('hello_begins_2')
-  return p
+function hello() {
+  console.log("hello_begins_2");
+  return p;
 }
 
-hello().then(res => {
-  console.log(res)
-  console.log('hello_7')
-  return 'hello_10'
-}).then(res => {
-  console.log(res)
-  console.log('hello_11')
-  return 'hello_13'
-}).then(res => {
-  console.log(res)
-  console.log('hello_14')
-})
+hello()
+  .then((res) => {
+    console.log(res);
+    console.log("hello_7");
+    return "hello_10";
+  })
+  .then((res) => {
+    console.log(res);
+    console.log("hello_11");
+    return "hello_13";
+  })
+  .then((res) => {
+    console.log(res);
+    console.log("hello_14");
+  });
 
-function test1 () {
-  console.log('test1_5')
+function test1() {
+  console.log("test1_5");
 }
 
-async function asy () {
-  console.log('asy_begins_3')
-  await console.log('asy_4')
+async function asy() {
+  console.log("asy_begins_3");
+  await console.log("asy_4");
 
-  console.log('async_8')
-  await console.log('asy_9')
+  console.log("async_8");
+  await console.log("asy_9");
 
-  console.log('asy_ends_12')
+  console.log("asy_ends_12");
 }
 
-asy()
-test1()
+asy();
+test1();
 ```
-> **任务是分层的**。await后面的代码虽然算作宏任务，但是和普通的微任务不在一个维度，位于更上一层的任务队列，所以优先度要比其他（下层）微任务要高；
+
+> **任务是分层的 **。await 后面的代码虽然算作宏任务，但是和普通的微任务不在一个维度，位于更上一层的任务队列，所以优先度要比其他（下层）微任务要高；
 
 [详细解释](https://www.cnblogs.com/AhuntSun-blog/p/13584169.html)
 
@@ -197,21 +202,48 @@ test1()
 [浏览器进程？线程？傻傻分不清楚！](https://imweb.io/topic/58e3bfa845e5c13468f567d5)
 
 ### jQuery.noConflict 实现原理
+
 部分第三方库可以回用到名为`$`的变量，或者一个项目中需要用到多个版本。此时需要用来`noConflict`来防止变量冲突，代码实现如下：
+
 ```js
-(function(window, undefined){
-    var _jQuery = window.jQuery
-    var _$ = window.$
-  
-    jQuery.extend({
-        // 当 deep 为 true，同时还原 jQuery 变量
-        noConflict: function( deep ) {
-            // 如果 window.$ 被 jQuery 修改了，还原全局变量
-            if ( window.$ === jQuery ) window.$ = _$
-            if ( deep && window.jQuery === jQuery ) window.jQuery = _jQuery
-            return jQuery;
-        }
-    })
-}(window))
+(function (window, undefined) {
+  var _jQuery = window.jQuery;
+  var _$ = window.$;
+
+  jQuery.extend({
+    // 当 deep 为 true，同时还原 jQuery 变量
+    noConflict: function (deep) {
+      // 如果 window.$ 被 jQuery 修改了，还原全局变量
+      if (window.$ === jQuery) window.$ = _$;
+      if (deep && window.jQuery === jQuery) window.jQuery = _jQuery;
+      return jQuery;
+    },
+  });
+})(window);
 ```
-整个运行流程： 储存`window.jQuery`和`window.$`变量（因此三方依赖需要在jQuery之前引入），判断是否两个变量是否被修改，如果是，还原全局变量。
+
+整个运行流程： 储存`window.jQuery`和`window.$`变量（因此三方依赖需要在 jQuery 之前引入），判断是否两个变量是否被修改，如果是，还原全局变量。
+
+### 手写发布订阅
+
+```js
+class EventListener {
+  events = new Map();
+  on(name, fn) {
+    this.events.set(name, { isOnce: false, fn });
+  }
+  once(name, fn) {
+    this.events.set(name, { isOnce: true, fn });
+  }
+  off(name) {
+    this.events.delete(name);
+  }
+  emit(name, ...args) {
+    let cache = this.events.get(name);
+    if (cache) {
+      if (cache.isOnce) this.events.delete(name);
+      cache.fn(...args);
+    }
+  }
+}
+```
