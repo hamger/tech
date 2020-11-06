@@ -195,3 +195,23 @@ test1()
 浏览器内核是通过取得页面内容、整理信息（应用 CSS）、计算和组合最终输出可视化的图像结果，通常也被称为渲染引擎。Chrome 浏览器为每个 tab 页面单独启用进程，因此每个 tab 网页都有由其独立的渲染引擎实例。浏览器内核是多线程，在内核控制下各线程相互配合以保持同步，一个浏览器通常由以下常驻线程组成：GUI 渲染线程、JavaScript 引擎线程、定时触发器线程、事件触发线程、异步 http 请求线程。
 
 [浏览器进程？线程？傻傻分不清楚！](https://imweb.io/topic/58e3bfa845e5c13468f567d5)
+
+### jQuery.noConflict 实现原理
+部分第三方库可以回用到名为`$`的变量，或者一个项目中需要用到多个版本。此时需要用来`noConflict`来防止变量冲突，代码实现如下：
+```js
+(function(window, undefined){
+    var _jQuery = window.jQuery
+    var _$ = window.$
+  
+    jQuery.extend({
+        // 当 deep 为 true，同时还原 jQuery 变量
+        noConflict: function( deep ) {
+            // 如果 window.$ 被 jQuery 修改了，还原全局变量
+            if ( window.$ === jQuery ) window.$ = _$
+            if ( deep && window.jQuery === jQuery ) window.jQuery = _jQuery
+            return jQuery;
+        }
+    })
+}(window))
+```
+整个运行流程： 储存`window.jQuery`和`window.$`变量（因此三方依赖需要在jQuery之前引入），判断是否两个变量是否被修改，如果是，还原全局变量。
