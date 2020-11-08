@@ -232,3 +232,27 @@ var p = new F();
 产生原因：某些数字（比如 0.1 和 0.2）转化为二进制之后，变成了一个无限循环的数字，对于无限循环的小数，计算机会进行舍入处理，因此计算时产生了误差。
 
 解决方法：把要计算的数字升级（乘以 10 的 n 次幂）成计算机能够精确识别的整数，计算完以后再降级。
+
+### 手写发布订阅
+
+```js
+class EventListener {
+  events = new Map();
+  on(name, fn) {
+    this.events.set(name, { isOnce: false, fn });
+  }
+  once(name, fn) {
+    this.events.set(name, { isOnce: true, fn });
+  }
+  off(name) {
+    this.events.delete(name);
+  }
+  emit(name, ...args) {
+    let cache = this.events.get(name);
+    if (cache) {
+      if (cache.isOnce) this.events.delete(name);
+      cache.fn(...args);
+    }
+  }
+}
+```

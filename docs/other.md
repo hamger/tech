@@ -1,35 +1,35 @@
 ### 重排(回流)和重绘
 
-- 重排（reflow）：由于节点几何属性（比如宽高）发生改变，渲染树需要重新分析并计算节点尺寸。
-- 重绘（repaint）：由于节点非几何属性（比如颜色）发生改变，屏幕上的部分内容需要更新。
+* 重排（reflow）：由于节点几何属性（比如宽高）发生改变，渲染树需要重新分析并计算节点尺寸。
+* 重绘（repaint）：由于节点非几何属性（比如颜色）发生改变，屏幕上的部分内容需要更新。
 
 > 最小化重排和重绘
 
-- 不要逐个变样式。
+* 不要逐个变样式。
 
-  - 改变类名而不是样式
-  - 或统一用 cssText 编辑
+  + 改变类名而不是样式
+  + 或统一用 cssText 编辑
 
-- “离线”的批量改变和表现 DOM。
+* “离线”的批量改变和表现 DOM。
 
-  - 通过 documentFragment 来保留临时变动
-  - 通过 display:none 属性隐藏元素（一次重排重绘），添加足够多的变更后，通过 display 属性显示（另一次重排重绘）
-  - 不频繁计算样式。通过将样式缓存在一个变量中进行计算，最后赋值给样式
+  + 通过 documentFragment 来保留临时变动
+  + 通过 display:none 属性隐藏元素（一次重排重绘），添加足够多的变更后，通过 display 属性显示（另一次重排重绘）
+  + 不频繁计算样式。通过将样式缓存在一个变量中进行计算，最后赋值给样式
 
-- 动画效果应用到 position 属性为 absolute 或 fixed 的元素上(绝对定位脱离文档流，避免引起父元素及后续元素的回流)
+* 动画效果应用到 position 属性为 absolute 或 fixed 的元素上(绝对定位脱离文档流，避免引起父元素及后续元素的回流)
 
 ### 浏览器渲染阻塞
 
 现代浏览器总是**并行加载**资源。例如，当 HTML 解析器被脚本阻塞时，解析器虽然会停止构建 DOM，但仍会识别该脚本后面的资源，并进行**预加载**。
 
-- CSS 被视为阻塞渲染的资源，这意味着浏览器将不会渲染任何已处理的内容，直至 CSSOM 构建完毕。
-- JavaScript 不仅可以读取和修改 DOM 属性，还可以读取和修改 CSSOM 属性。
-- 当浏览器遇到一个 script 标记时，DOM 构建将暂停，直至脚本完成执行。
-- CSSOM 构建时，JavaScript 执行将暂停，直至 CSSOM 就绪。
+* CSS 被视为阻塞渲染的资源，这意味着浏览器将不会渲染任何已处理的内容，直至 CSSOM 构建完毕。
+* JavaScript 不仅可以读取和修改 DOM 属性，还可以读取和修改 CSSOM 属性。
+* 当浏览器遇到一个 script 标记时，DOM 构建将暂停，直至脚本完成执行。
+* CSSOM 构建时，JavaScript 执行将暂停，直至 CSSOM 就绪。
 
-> 如果 JS 文件体积太大，同时你确定没必要阻塞 DOM 解析的话，不妨按需要加上 defer（立即下载，但延迟到整个页面都解析完毕后再执行）或者 async （不让页面等待该脚本下载和执行，从而异步加载页面其他内容）属性，此时脚本下载的过程中不会阻塞 DOM 解析。另外也可以拆分大文件，不用立即执行的代码，可以使用`setTimeout()`进行延迟处理。
+> 如果 JS 文件体积太大，同时你确定没必要阻塞 DOM 解析的话，不妨按需要加上 defer（立即下载，但延迟到整个页面都解析完毕后再执行）或者 async （不让页面等待该脚本下载和执行，从而异步加载页面其他内容）属性，此时脚本下载的过程中不会阻塞 DOM 解析。另外也可以拆分大文件，不用立即执行的代码，可以使用 `setTimeout()` 进行延迟处理。
 
-> async 是乱序的，defer 是顺序执行，async 就相当于单独开了一个进程去独立加载和执行，而 defer 相当于将`<script>`放到`<body>`底部。注意 async 与 defer 属性对于 inline-script 都是无效的，只针对设置了 src 属性的 script 标签。
+> async 是乱序的，defer 是顺序执行，async 就相当于单独开了一个进程去独立加载和执行，而 defer 相当于将 `<script>` 放到 `<body>` 底部。注意 async 与 defer 属性对于 inline-script 都是无效的，只针对设置了 src 属性的 script 标签。
 
 ### 垃圾回收机制（Garbage Collection）
 
@@ -47,8 +47,8 @@
 
 ### cookie 与 session
 
-- Cookie 是将用户的数据存储到**客户端**的技术
-- Session 是将数据存储在**服务端**的技术，会为每个客户端都创建一块内存空间，存储客户的数据，但客户端需要每次都携带一个标识 ID 去服务器中寻找属于自己的内存空间。所以 Session 的实现是基于 Cookie ，Session 需要借助于 Cookie 存储客户的唯一标识 session ID
+* Cookie 是将用户的数据存储到**客户端**的技术
+* Session 是将数据存储在**服务端**的技术，会为每个客户端都创建一块内存空间，存储客户的数据，但客户端需要每次都携带一个标识 ID 去服务器中寻找属于自己的内存空间。所以 Session 的实现是基于 Cookie ，Session 需要借助于 Cookie 存储客户的唯一标识 session ID
 
 [Cookie 与 session 的区别及其常见面试问题](https://blog.csdn.net/weixin_40521823/article/details/79837162)
 
@@ -63,13 +63,13 @@
 
 ### devDependencies、dependencies、peerDependencies
 
-- dependencies 生产环境下依赖的模块，不仅开发环境能使用，生产环境也能使用
-- devDependencies 开发环境下依赖的模块，只在开发环境能使用
-- peerDependencies 指定所需要兼容的宿主包的版本，[detail](https://xwenliang.cn/p/5af2a97d5a8a996548000003)
+* dependencies 生产环境下依赖的模块，不仅开发环境能使用，生产环境也能使用
+* devDependencies 开发环境下依赖的模块，只在开发环境能使用
+* peerDependencies 指定所需要兼容的宿主包的版本，[detail](https://xwenliang.cn/p/5af2a97d5a8a996548000003)
 
 比如我们发布了一个名字叫做 webpack-plugin-a 的插件，他只是 webpack 的一个插件，并不依赖 webpack，所以不会把 webpack 写入自身的 dependencies 或者 devDependencies，但是使用这个插件的项目需要安装指定版本的 webpack ，这时可以使用 peerDependencies 指定 webpack 的版本：
 
-```js
+``` js
 "peerDependencies": {
     "webpack": "^2.0.0"
 }
@@ -79,8 +79,8 @@
 
 异步任务分为 task（宏任务，也可称为 macroTask ）和 microtask（微任务）两类。
 
-- macroTask: `script(整体代码)`、`requestAnimationFrame`、`setTimeout`、`setInterval`、 `postMessage`、`async` 函数未完成的部分、UI render、 NodeJS 中的`I/O`。
-- microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs 中的`process.nextTick`。
+* macroTask: `script(整体代码)`、`requestAnimationFrame`、`setTimeout`、`setInterval`、 `postMessage`、`async` 函数未完成的部分、UI render、 NodeJS 中的`I/O`。
+* microTask: `promise`、`Object.observe`、`MutationObserver`、NodeJs 中的`process.nextTick`。
 
 > setTimeout / setInterval 要放到**宏任务队列的末尾**
 
@@ -92,10 +92,10 @@
 4. 取出微任务队列中任务执行直到清空。
 5. 重复 3 和 4。
 
-```js
+``` js
 while (true) {
-  宏任务队列.shift();
-  微任务队列全部任务();
+    宏任务队列.shift();
+    微任务队列全部任务();
 }
 ```
 
@@ -103,15 +103,16 @@ while (true) {
 
 #### 例子一
 
-```js
+``` js
 function foo() {
-  console.error("foo");
-  Promise.resolve().then(foo);
+    console.error("foo");
+    Promise.resolve().then(foo);
 }
 foo();
+
 function bar() {
-  console.error("bar");
-  setTimeout(bar);
+    console.error("bar");
+    setTimeout(bar);
 }
 bar();
 
@@ -124,45 +125,45 @@ bar();
 
 #### 例子二
 
-```js
+``` js
 var p = new Promise((resolve, reject) => {
-  resolve("hello_6");
-  console.log("1");
+    resolve("hello_6");
+    console.log("1");
 });
 
 function hello() {
-  console.log("hello_begins_2");
-  return p;
+    console.log("hello_begins_2");
+    return p;
 }
 
 hello()
-  .then((res) => {
-    console.log(res);
-    console.log("hello_7");
-    return "hello_10";
-  })
-  .then((res) => {
-    console.log(res);
-    console.log("hello_11");
-    return "hello_13";
-  })
-  .then((res) => {
-    console.log(res);
-    console.log("hello_14");
-  });
+    .then((res) => {
+        console.log(res);
+        console.log("hello_7");
+        return "hello_10";
+    })
+    .then((res) => {
+        console.log(res);
+        console.log("hello_11");
+        return "hello_13";
+    })
+    .then((res) => {
+        console.log(res);
+        console.log("hello_14");
+    });
 
 function test1() {
-  console.log("test1_5");
+    console.log("test1_5");
 }
 
 async function asy() {
-  console.log("asy_begins_3");
-  await console.log("asy_4");
+    console.log("asy_begins_3");
+    await console.log("asy_4");
 
-  console.log("async_8");
-  await console.log("asy_9");
+    console.log("async_8");
+    await console.log("asy_9");
 
-  console.log("asy_ends_12");
+    console.log("asy_ends_12");
 }
 
 asy();
@@ -175,10 +176,10 @@ test1();
 
 ### 常见的编程范式
 
-- 命令式编程(过程化编程): 更关心解决问题的步骤，一步步以语言的形式告诉计算机做什么
-- 事件驱动编程: 事件订阅与触发，被广泛用于 GUI 的编程设计中
-- 面向对象编程: 基于类、对象与方法的设计模式，拥有三个基础概念: 封装性、继承性、多态性
-- 函数式编程: 将运算最大限度地转化为一系列**纯函数**的调用
+* 命令式编程(过程化编程): 更关心解决问题的步骤，一步步以语言的形式告诉计算机做什么
+* 事件驱动编程: 事件订阅与触发，被广泛用于 GUI 的编程设计中
+* 面向对象编程: 基于类、对象与方法的设计模式，拥有三个基础概念: 封装性、继承性、多态性
+* 函数式编程: 将运算最大限度地转化为一系列**纯函数**的调用
 
 > 纯函数：不依赖外部变量，不修改外部变量，在任何时候传入相同参数，得到相同结果。
 
@@ -188,12 +189,28 @@ test1();
 
 > 函数式编程应用：柯里化（curry）、组合 (compose)
 
-### 模块化开发优势
+### 前端模块化
 
-- 更好的代码组织方式，便于多人协作开发
-- 利于代码复用和功能的扩充
-- 易于实现按需加载
-- 避免命名冲突和污染全局变量
+#### 优势
+
+* 更好的代码组织方式，便于多人协作开发
+* 利于代码复用和功能的扩充
+* 易于实现按需加载
+* 避免命名冲突和污染全局变量
+
+#### CommonJS, AMD, CMD, ES6
+
+* Node.js 是 commonJS规范的主要实践者，它有四个重要的环境变量为模块化的实现提供支持：`module`、`exports`、`require`、`global`。
+* require.js 是 CMD 规范的主要实践者，采用异步方式加载模块。所有依赖这个模块的语句，都定义在一个回调函数中，加载完成后回调函数才会运行。
+* sea.js 是 CMD 规范的主要实践者，AMD 推崇依赖前置、提前执行，CMD 推崇依赖就近、延迟执行。
+* ES6 在语言标准的层面上，实现了模块功能，其模块功能主要由两个命令构成：`export`和`import`。
+
+[详情](https://juejin.im/post/6844903576309858318)
+
+#### ES6 模块与 CommonJS 模块的差异
+
+* CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+* CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
 
 ### 浏览器多进程架构
 
@@ -203,47 +220,23 @@ test1();
 
 ### jQuery.noConflict 实现原理
 
-部分第三方库可以回用到名为`$`的变量，或者一个项目中需要用到多个版本。此时需要用来`noConflict`来防止变量冲突，代码实现如下：
+部分第三方库可以回用到名为 `$` 的变量，或者一个项目中需要用到多个版本。此时需要用来 `noConflict` 来防止变量冲突，代码实现如下：
 
-```js
-(function (window, undefined) {
-  var _jQuery = window.jQuery;
-  var _$ = window.$;
+``` js
+(function(window, undefined) {
+    var _jQuery = window.jQuery;
+    var _$ = window.$;
 
-  jQuery.extend({
-    // 当 deep 为 true，同时还原 jQuery 变量
-    noConflict: function (deep) {
-      // 如果 window.$ 被 jQuery 修改了，还原全局变量
-      if (window.$ === jQuery) window.$ = _$;
-      if (deep && window.jQuery === jQuery) window.jQuery = _jQuery;
-      return jQuery;
-    },
-  });
+    jQuery.extend({
+        // 当 deep 为 true，同时还原 jQuery 变量
+        noConflict: function(deep) {
+            // 如果 window.$ 被 jQuery 修改了，还原全局变量
+            if (window.$ === jQuery) window.$ = _$;
+            if (deep && window.jQuery === jQuery) window.jQuery = _jQuery;
+            return jQuery;
+        },
+    });
 })(window);
 ```
 
-整个运行流程： 储存`window.jQuery`和`window.$`变量（因此三方依赖需要在 jQuery 之前引入），判断是否两个变量是否被修改，如果是，还原全局变量。
-
-### 手写发布订阅
-
-```js
-class EventListener {
-  events = new Map();
-  on(name, fn) {
-    this.events.set(name, { isOnce: false, fn });
-  }
-  once(name, fn) {
-    this.events.set(name, { isOnce: true, fn });
-  }
-  off(name) {
-    this.events.delete(name);
-  }
-  emit(name, ...args) {
-    let cache = this.events.get(name);
-    if (cache) {
-      if (cache.isOnce) this.events.delete(name);
-      cache.fn(...args);
-    }
-  }
-}
-```
+整个运行流程： 储存 `window.jQuery` 和 `window.$` 变量（因此三方依赖需要在 jQuery 之前引入），判断是否两个变量是否被修改，如果是，还原全局变量。
