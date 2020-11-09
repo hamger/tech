@@ -1,37 +1,44 @@
 ### 函数节流（throttle）与函数去抖（debounce）
 
 设定一个执行周期为 T。节流：当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。
+
 ```js
-function throttle (fn, times) {
-    var canRun = true
-    return function (...args) {
-        if (!canRun) return false
-        canRun = false
-        fn.apply(this, args)
-        setTimeout(() => {
-            canRun = true
-        }, times || 500)
-    }
+function throttle(fn, times) {
+  var canRun = true;
+  return function (...args) {
+    if (!canRun) return false;
+    canRun = false;
+    fn.apply(this, args);
+    setTimeout(() => {
+      canRun = true;
+    }, times || 500);
+  };
 }
-var tn = throttle(q => {console.log(q)})
-tn(12)
-tn(12)
+var tn = throttle((q) => {
+  console.log(q);
+});
+tn(12);
+tn(12);
 // 只输出一次： 12
 ```
+
 去抖：当调用动作 T 后，才会执行该动作，若在 T 内又调用此动作则重新计算执行时间。
+
 ```js
-function debounce (fn, times) {
-    return function (...args) {
-        clearTimeout(timer)
-        var timer = setTimeout(() => {
-            fn.apply(this, args)
-        }, times || 500)
-    }
+function debounce(fn, times) {
+  return function (...args) {
+    clearTimeout(timer);
+    var timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, times || 500);
+  };
 }
-var dn = debounce(q => {console.log(q)})
-dn(13)
-setTimeout(() => dn(13), 400)
-// 在 900 毫秒之后输出一次： 13 
+var dn = debounce((q) => {
+  console.log(q);
+});
+dn(13);
+setTimeout(() => dn(13), 400);
+// 在 900 毫秒之后输出一次： 13
 ```
 
 ### 千位分隔
@@ -51,37 +58,42 @@ function numFormat(num) {
 
 ```js
 function numFormat(num) {
-    num = num.toString().split('.');
-    var arr = num[0].split('').reverse();
-    var res = arr.reduce((total, cur, idx) => {
-        total.push(cur)
-        if (idx !== 0 && idx % 3 === 0) total.push(',')
-        return total
-    }, [])
-    var integer = res.reverse().join('');
-    return num[1] ? integer + '.' + num[1] : integer;
+  num = num.toString().split(".");
+  var arr = num[0].split("").reverse();
+  var res = arr.reduce((total, cur, idx) => {
+    total.push(cur);
+    if (idx !== 0 && idx % 3 === 0) total.push(",");
+    return total;
+  }, []);
+  var integer = res.reverse().join("");
+  return num[1] ? integer + "." + num[1] : integer;
 }
-console.log(numFormat(12345678.1233)) // 1,234,5678.1233
+console.log(numFormat(12345678.1233)); // 1,234,5678.1233
 ```
 
 ### 词法环境
-词法环境是一种规范类型（specification type），它定义了标识符和ECMAScript代码中的特定变量及函数之间的联系。
-执行函数、with语句、catch语句会创建新的词法作用域。
+
+词法环境是一种规范类型（specification type），它定义了标识符和 ECMAScript 代码中的特定变量及函数之间的联系。
+执行函数、with 语句、catch 语句会创建新的词法作用域。
 词法环境可以形成链表结构，这就是常提到**作用域链**。
 
-[解读闭包，这次从ECMAScript词法环境，执行上下文说起](https://juejin.im/post/6858052418862235656#comment)
+[解读闭包，这次从 ECMAScript 词法环境，执行上下文说起](https://juejin.im/post/6858052418862235656#comment)
 
 ### 简述 == 机制
+
 ```js
-[] == ![]// true
+[] == ![]; // true
 ```
-涉及到js中的隐式强制类型转换，具体步骤如下：
+
+涉及到 js 中的隐式强制类型转换，具体步骤如下：
+
 1. 如果有一个操作数是布尔值，则在比较相等性之前先将其转换为数值（false 转换为 0，true 转换为 1）。
 2. 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值。
-3. 如果一个操作数是对象，另一个操作数不是，则调用对象的valueOf()方法，如果得到的值不是基本类型值，则基于返回值再调用toString方法（这个过程即ToPrimitive），用得到的基本类型值按照前面的规则进行比较。
-4. 如果两个操作数都是对象，则比较他们是不是同一个对象。如果两个操作数指向同一个对象，则相等操作符返回true, 否则返回false。
+3. 如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，如果得到的值不是基本类型值，则基于返回值再调用 toString 方法（这个过程即 ToPrimitive），用得到的基本类型值按照前面的规则进行比较。
+4. 如果两个操作数都是对象，则比较他们是不是同一个对象。如果两个操作数指向同一个对象，则相等操作符返回 true, 否则返回 false。
 
 根据上面的步骤，解释`[] == ![]`的转化过程:
+
 ```js
 [] == ![]
 [] == false
@@ -92,12 +104,12 @@ ToPrimitive([]) == 0
 0 == 0 // -> true
 ```
 
-根据步骤4可得知：
-```js
-var a = {}
-a == '[object Object]' // true
-```
+根据步骤 4 可得知：
 
+```js
+var a = {};
+a == "[object Object]"; // true
+```
 
 ### valueOf 和 toString
 
@@ -147,14 +159,15 @@ setInterval(() => {
 
 ```js
 function sleep(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time));
 }
 ```
 
 ### 数组去重
+
 ```js
 function dedupe(arr) {
-    return [...new Set(arr)]
+  return [...new Set(arr)];
 }
 ```
 
@@ -182,11 +195,11 @@ Object 的属性有 4 个描述行为的特性：
 bind 函数可以通过以下代码模拟：
 
 ```js
-Function.prototype.bind = function(that) {
+Function.prototype.bind = function (that) {
   var _this = this,
     slice = Array.prototype.slice,
     args = slice.call(arguments, 1);
-  return function() {
+  return function () {
     return _this.apply(that, args.concat(slice.call(arguments, 0)));
   };
 };
@@ -203,12 +216,13 @@ foo(); // 1
 ```
 
 要想使以上代码最后输出 2 ，需要经过以下改造，原理是添加一个指向初始函数的指针`__bind__`，在多次调用`bind()`时，`apply()`的第一个参数始终为初始函数
+
 ```js
 var functionPrototypeBind = Function.prototype.bind;
 Function.prototype.bind = function bind() {
   var fn = typeof this.__bind__ === "function" ? this.__bind__ : this;
   var bindfn = functionPrototypeBind.apply(fn, arguments);
-  bindfn.__bind__ = fn
+  bindfn.__bind__ = fn;
   return bindfn;
 };
 ```
@@ -216,7 +230,7 @@ Function.prototype.bind = function bind() {
 ### new 操作符的工作原理
 
 ```js
-var F = function() {};
+var F = function () {};
 var p = new F();
 ```
 
@@ -255,4 +269,34 @@ class EventListener {
     }
   }
 }
+```
+
+### 原生 js 发生 http 请求
+
+最原始的方式是使用`XMLHttpRequset`:
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function () {
+  if (xhr.readyState == 4) {
+    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+      info.innerHTML = xhr.responseText;
+    }
+  }
+};
+// 每次需要发请求需要做两步：
+xhr.open("get", url, true);
+xhr.send(null);
+```
+
+还有一种更新的方式是使用`fetch`:
+
+```js
+fetch("http://example.com/movies.json")
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (myJson) {
+    console.log(myJson);
+  });
 ```
