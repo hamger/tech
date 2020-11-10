@@ -189,6 +189,15 @@ test1();
 
 > 函数式编程应用：柯里化（curry）、组合 (compose)
 
+### 设计原则
+
+* 单一职责原则（Single Responsibility Principle，简称SRP ）：一个类只有一个职责。
+* 里氏替换原则（Liskov Substitution Principle,简称LSP）：所有引用基类的地方必须能使用其子类的对象。
+* 依赖倒置原则（Dependence Inversion Principle,简称DIP）：高层模块不应该依赖底层模块，二者都该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象。
+* 接口隔离原则（Interface Segregation Principle,简称ISP）： 类间的依赖关系应该建立在最小的接口上。
+* 迪米特法则（Law of Demeter,简称LoD）：一个对象应该对其他对象有最少的了解，又叫做最少知识原则，意义在于降低类之间的耦合。
+* 开放封闭原则（Open Close Principle,简称OCP）：尽量通过扩展软件实体来解决需求变化，而不是通过修改已有的代码来完成变化。
+
 ### 前端模块化
 
 #### 优势
