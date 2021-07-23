@@ -3,8 +3,8 @@
 ```js
 var examplearr = [8, 94, 15, 88, 55, 76, 21, 39];
 function sortarr(arr) {
-  for (i = 0; i < arr.length - 1; i++) {
-    for (j = 0; j < arr.length - 1 - i; j++) {
+  for (var i = 0; i < arr.length - 1; i++) {
+    for (var j = 0; j < arr.length - 1 - i; j++) {
       if (arr[j] > arr[j + 1]) {
         var temp = arr[j];
         arr[j] = arr[j + 1];
@@ -80,7 +80,7 @@ var breadthTraversal = function (node) {
 }
 ```
 #### 从左往右看二叉树
-衍生题：从左往右看二叉树，求看到的字母。思路：将二叉树分层，每层最左边的字母，就是能不看到的字母，提到分层从而想到广度遍历，在广度遍历中加入层数信息，最后遍历得到数组，取出每层的第一个。
+衍生题：从左往右看二叉树，求看到的字母。思路：将二叉树分层，每层最左边的字母，就是能看到的字母，提到分层从而想到广度遍历，在广度遍历中加入层数信息，最后遍历得到数组，取出每层的第一个。
 ```js
 function leftSee(node) {
   var res = []
@@ -106,7 +106,7 @@ function traverseNode (node) {
   if (node.children && node.children.length > 0) {
       for (let i = 0; i < node.children.length; i++) {
           // 前序遍历需要的操作
-          this.traverseTree(node.children[i]);
+          traverseNode(node.children[i]);
           // 后序遍历需要的操作
       }
   }
