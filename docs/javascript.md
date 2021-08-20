@@ -1,3 +1,8 @@
+### 数据类型
+* 6种原始类型：string、number、 boolean、string、bigInt、symbol
+* null: ` typeof instance === "object" `
+* Object: `typeof instance === "object"`
+
 ### 函数节流（throttle）与函数去抖（debounce）
 
 设定一个执行周期为 T。节流：当前后调用的时间间隔小于 T 则不执行该动作，反之则执行。
