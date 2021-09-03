@@ -114,31 +114,23 @@ function traverseNode (node) {
 ```
 
 ### 回溯算法
-回溯算法三要素：
-* 路径：也就是已经做出的选择。
-* 选择列表：也就是你当前可以做的选择。
-* 结束条件：也就是到达决策树底层，无法再做选择的条件。
-```js
-function getResult(sel, target) {
-    var res = []
-    // 路径：path，选择列表：selects
-    function backtrack(path, selects) {
-        if (满足结束条件) { // 和 target 有关的结束条件
-            res.push(JSON.parse(JSON.stringify(path)))
-            return
-        }
-        selects.forEach((select, index) => {
-            path.push(select) // 做选择
-            // 修正选择后的选择列表，递归
-            var temp = JSON.parse(JSON.stringify(selects))
-            temp.splice(index, 1)
-            backtrack(path, tmp)
-            path.pop() // 撤销选择
-        });
-    }
-    backtrack([], sel)
-    return res
-}
+回溯算法可以用来解决子集、排列、组合问题，主要形式是从一堆选项中挑选出符合要求的组合，基础模板如下：
+```python
+# nums 选项
+def dining(nums):
+  desk = []
+  # dish: 打菜盘，menus: 菜单
+  def backtrack(dish, menus):
+    if (满足结束条件):
+      desk.append(dish)
+    for val in menus:
+      # 做选择
+      dish.append(val)
+      backtrack(dish, 新菜单)
+      # 撤销选择
+      dish.pop()
+  backtrack([], nums)
+  return desk
 ```
 #### 求全排列
 给定一个没有重复数字的序列，返回其所有可能的全排列。
