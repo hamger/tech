@@ -62,7 +62,7 @@ var preOrderUnRecursion = function (node) {
   return arr
 }
 ```
-深度遍历采用**栈**，广度遍历采用**队列**。
+深度优先遍历（DFS）采用**栈**，广度优先遍历（BFS）采用**队列**。
 ```js
 // 广度遍历
 var breadthTraversal = function (node) {

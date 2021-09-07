@@ -1,50 +1,65 @@
-triangle = [
-     [2],
-    [3,4],
-   [6,5,7],
-  [4,1,8,3],
-  [14,99,88,13,2],
-]
+'''
+          a
+    b            c
+d       e      f   g
+      h   i
+'''
+tree = {
+  'value': 'a',
+  'left': {
+    'value': 'b',
+    'left': {
+      'value': 'd',
+    },
+    'right': {
+      'value': 'e',
+      'left': {
+        'value': 'h',
+      },
+      'right': {
+        'value': 'i',
+      }
+    }
+  },
+  'right': {
+    'value': 'c',
+    'left': {
+      'value': 'f',
+    },
+    'right': {
+      'value': 'g',
+    }
+  }
+}
 
-# 假设最后一个元素的位置为 [i][j]
 
-def minimumTotal(triangle):
-  n = len(triangle)
-  dp = [0] * n
-  # 从最后一行到第一行
-  for i in range(n - 2, 0, -1):
-    # 从第一列到最后一页
-    for j in range(0, i + 1, 1):
-      dp[j] = min(dp[j], dp[j + 1]) + triangle[i][j]
-  print(dp)
-  return dp[0]
+# 深度优先 栈
+def dfs(node):
+  arr = []
+  stack = [node]
+  while (len(stack) > 0):
+    temp = stack.pop(0) # 取最后一个
+    if temp['right']:
+      stack.append(temp['right'])
+    arr.append(temp['value'])
+    if temp['left']:
+      stack.append(temp['left'])
+  return arr
 
-print(minimumTotal(triangle))
+dfs(tree)
 
 
-def minimumTotal2(triangle):
-        n = len(triangle)
-        f = [0] * n
-        f[0] = triangle[0][0]
+# 广度优先  队列  
+def bfs(node):
+  arr = []
+  queue = [node]
+  while (len(queue) > 0):
+    temp = queue.pop(0) # 取第一个
+    arr.append(temp['value'])
+    if temp['left']:
+      queue.append(temp['left'])
+    if temp['right']:
+      queue.append(temp['right'])
+  return arr
 
-        for i in range(1, n):
-            f[i] = f[i - 1] + triangle[i][i]
-            for j in range(i - 1, 0, -1):
-                f[j] = min(f[j - 1], f[j]) + triangle[i][j]
-            f[0] += triangle[i][0]
-        
-        return min(f)
-        
-        n = len(triangle)
-        f = [[0] * n for _ in range(n)]
-        f[0][0] = triangle[0][0]
-
-        for i in range(1, n):
-            f[i][0] = f[i - 1][0] + triangle[i][0]
-            for j in range(1, i):
-                f[i][j] = min(f[i - 1][j - 1], f[i - 1][j]) + triangle[i][j]
-            f[i][i] = f[i - 1][i - 1] + triangle[i][i]
-        
-        return min(f[n - 1])
-
-print(minimumTotal2(triangle))
+bfs(tree)

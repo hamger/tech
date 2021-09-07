@@ -1,4 +1,5 @@
 ### 数据类型
+
 * 6种原始类型：string、number、 boolean、string、bigInt、symbol
 * null: ` typeof instance === "object" `
 * Object: `typeof instance === "object"`
@@ -9,18 +10,18 @@
 
 ```js
 function throttle(fn, times) {
-  var canRun = true;
-  return function (...args) {
-    if (!canRun) return false;
-    canRun = false;
-    fn.apply(this, args);
-    setTimeout(() => {
-      canRun = true;
-    }, times || 500);
-  };
+    var canRun = true;
+    return function(...args) {
+        if (!canRun) return false;
+        canRun = false;
+        fn.apply(this, args);
+        setTimeout(() => {
+            canRun = true;
+        }, times || 500);
+    };
 }
 var tn = throttle((q) => {
-  console.log(q);
+    console.log(q);
 });
 tn(12);
 tn(12);
@@ -31,15 +32,15 @@ tn(12);
 
 ```js
 function debounce(fn, times) {
-  return function (...args) {
-    clearTimeout(timer);
-    var timer = setTimeout(() => {
-      fn.apply(this, args);
-    }, times || 500);
-  };
+    return function(...args) {
+        clearTimeout(timer);
+        var timer = setTimeout(() => {
+            fn.apply(this, args);
+        }, times || 500);
+    };
 }
 var dn = debounce((q) => {
-  console.log(q);
+    console.log(q);
 });
 dn(13);
 setTimeout(() => dn(13), 400);
@@ -52,10 +53,10 @@ setTimeout(() => dn(13), 400);
 
 ```js
 function numFormat(num) {
-  num = num.toString().split(".");
-  var reg = /(?=(\B\d{3})+$)/g;
-  var integer = num[0].replace(reg, ",");
-  return num[1] ? integer + "." + num[1] : integer;
+    num = num.toString().split(".");
+    var reg = /(?=(\B\d{3})+$)/g;
+    var integer = num[0].replace(reg, ",");
+    return num[1] ? integer + "." + num[1] : integer;
 }
 ```
 
@@ -63,15 +64,15 @@ function numFormat(num) {
 
 ```js
 function numFormat(num) {
-  num = num.toString().split(".");
-  var arr = num[0].split("").reverse();
-  var res = arr.reduce((total, cur, idx) => {
-    total.push(cur);
-    if (idx !== 0 && idx % 3 === 0) total.push(",");
-    return total;
-  }, []);
-  var integer = res.reverse().join("");
-  return num[1] ? integer + "." + num[1] : integer;
+    num = num.toString().split(".");
+    var arr = num[0].split("").reverse();
+    var res = arr.reduce((total, cur, idx) => {
+        total.push(cur);
+        if (idx !== 0 && idx % 3 === 0) total.push(",");
+        return total;
+    }, []);
+    var integer = res.reverse().join("");
+    return num[1] ? integer + "." + num[1] : integer;
 }
 console.log(numFormat(12345678.1233)); // 1,234,5678.1233
 ```
@@ -97,15 +98,13 @@ console.log(numFormat(12345678.1233)); // 1,234,5678.1233
 3. 如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，如果得到的值不是基本类型值，则基于返回值再调用 toString 方法（这个过程即 ToPrimitive），用得到的基本类型值按照前面的规则进行比较。
 4. 如果两个操作数都是对象，则比较他们是不是同一个对象。如果两个操作数指向同一个对象，则相等操作符返回 true, 否则返回 false。
 
-根据上面的步骤，解释`[] == ![]`的转化过程:
+根据上面的步骤，解释 `[] == ![]` 的转化过程:
 
 ```js
 [] == ![]
 [] == false
-[] == ToNumber(false)
-[] == 0
-ToPrimitive([]) == 0
-'' == 0 // Number('') = 0
+    [] == ToNumber(false)[] == 0
+ToPrimitive([]) == 0 '' == 0 // Number('') = 0
 0 == 0 // -> true
 ```
 
@@ -120,8 +119,8 @@ a == "[object Object]"; // true
 
 基本上所有的 JavaScript 数据类型都有 valueOf()，toString()方法，null 除外，这两个方法解决了 JavaScript 值运算和显示的问题。
 
-- valueOf() 会把数据类型转换成原始类型
-- toString() 会把数据类型转换成 string 类型
+* valueOf() 会把数据类型转换成原始类型
+* toString() 会把数据类型转换成 string 类型
 
 这两个方法有意思的地方在于什么时候使用，总结如下：
 1、valueOf()偏向于运算，toString()偏向于显示
@@ -138,8 +137,8 @@ a == "[object Object]"; // true
 
 ```js
 setTimeout(function foo() {
-  e.style.left += 2;
-  setTimeout(foo, 1000 / 60);
+    e.style.left += 2;
+    setTimeout(foo, 1000 / 60);
 }, 0);
 ```
 
@@ -147,7 +146,7 @@ setTimeout(function foo() {
 
 ```js
 setInterval(() => {
-  e.style.left += 2;
+    e.style.left += 2;
 }, 1000 / 60);
 ```
 
@@ -155,16 +154,16 @@ setInterval(() => {
 
 ```js
 (function animloop() {
-  e.style.left += 2;
-  requestAnimFrame(animloop);
+    e.style.left += 2;
+    requestAnimFrame(animloop);
 })();
 ```
 
-### 封装一个函数，参数是定时器的时间，`.then`执行回调
+### 封装一个函数，参数是定时器的时间， `.then` 执行回调
 
 ```js
 function sleep(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 ```
 
@@ -172,13 +171,13 @@ function sleep(time) {
 
 ```js
 function dedupe(arr) {
-  return [...new Set(arr)];
+    return [...new Set(arr)];
 }
 ```
 
 ### 判断两个对象相等
 
-使用`JSON.stringify`来快速判断
+使用 `JSON.stringify` 来快速判断
 
 ```js
 JSON.stringify(obj) == JSON.stringify(obj2);
@@ -188,10 +187,10 @@ JSON.stringify(obj) == JSON.stringify(obj2);
 
 Object 的属性有 4 个描述行为的特性：
 
-- Configurable：表示能否通过 delete 删除属性从而重新定义属性
-- Enumerable：表示能否通过 for-in 循环返回属性
-- writable：表示能否修改属性的值
-- Value：表示这个属性的值
+* Configurable：表示能否通过 delete 删除属性从而重新定义属性
+* Enumerable：表示能否通过 for-in 循环返回属性
+* writable：表示能否修改属性的值
+* Value：表示这个属性的值
 
 以上四个属性在不显示调用 Object.defineProperty()的时候，前三个默认值都为 true，而 value 为你自己设定的值，如果不设定的话则为 undefined。
 
@@ -200,42 +199,46 @@ Object 的属性有 4 个描述行为的特性：
 bind 函数可以通过以下代码模拟：
 
 ```js
-Function.prototype.bind = function (that) {
-  var _this = this,
-    slice = Array.prototype.slice,
-    args = slice.call(arguments, 1);
-  return function () {
-    return _this.apply(that, args.concat(slice.call(arguments, 0)));
-  };
+Function.prototype.bind = function(that) {
+    var _this = this,
+        slice = Array.prototype.slice,
+        args = slice.call(arguments, 1);
+    return function() {
+        return _this.apply(that, args.concat(slice.call(arguments, 0)));
+    };
 };
 ```
 
-当 bind 被多次调用时，只有第一次调用生效。 `bind()`相当于使用函数在内部包了一个 `call / apply` ，第二次 `bind()` 相当于再包住第一次 `bind()`，故第二次以后的 bind 是无法生效的。
+当 bind 被多次调用时，只有第一次调用生效。 `bind()` 相当于使用函数在内部包了一个 `call / apply` ，第二次 `bind()` 相当于再包住第一次 `bind()` ，故第二次以后的 bind 是无法生效的。
 
 ```js
 function foo() {
-  return this.bar;
+    return this.bar;
 }
-foo = foo.bind({ bar: 1 }).bind({ bar: 2 });
+foo = foo.bind({
+    bar: 1
+}).bind({
+    bar: 2
+});
 foo(); // 1
 ```
 
-要想使以上代码最后输出 2 ，需要经过以下改造，原理是添加一个指向初始函数的指针`__bind__`，在多次调用`bind()`时，`apply()`的第一个参数始终为初始函数
+要想使以上代码最后输出 2 ，需要经过以下改造，原理是添加一个指向初始函数的指针 `__bind__` ，在多次调用 `bind()` 时， `apply()` 的第一个参数始终为初始函数
 
 ```js
 var functionPrototypeBind = Function.prototype.bind;
 Function.prototype.bind = function bind() {
-  var fn = typeof this.__bind__ === "function" ? this.__bind__ : this;
-  var bindfn = functionPrototypeBind.apply(fn, arguments);
-  bindfn.__bind__ = fn;
-  return bindfn;
+    var fn = typeof this.__bind__ === "function" ? this.__bind__ : this;
+    var bindfn = functionPrototypeBind.apply(fn, arguments);
+    bindfn.__bind__ = fn;
+    return bindfn;
 };
 ```
 
 ### new 操作符的工作原理
 
 ```js
-var F = function () {};
+var F = function() {};
 var p = new F();
 ```
 
@@ -244,7 +247,7 @@ var p = new F();
 3. 让 F 中的 this 指向 instance，并执行 F 的函数体`F.call(instance)`
 4. 判断 F 的返回值类型：如果是值类型，就丢弃它，还是返回 instance；如果是引用类型，就返回这个引用类型的对象，替换掉 instance
 
-> 如果没有写 return，相当于`return undefined`(JavaScript 中的函数都是如此)。undefined 是值类型的，因此返回 instance。
+> 如果没有写 return，相当于 `return undefined` (JavaScript 中的函数都是如此)。undefined 是值类型的，因此返回 instance。
 
 ### 浮点数计算不准确问题
 
@@ -256,52 +259,63 @@ var p = new F();
 
 ```js
 class EventListener {
-  events = new Map();
-  on(name, fn) {
-    this.events.set(name, { isOnce: false, fn });
-  }
-  once(name, fn) {
-    this.events.set(name, { isOnce: true, fn });
-  }
-  off(name) {
-    this.events.delete(name);
-  }
-  emit(name, ...args) {
-    let cache = this.events.get(name);
-    if (cache) {
-      if (cache.isOnce) this.events.delete(name);
-      cache.fn(...args);
+    events = new Map();
+    on(name, fn) {
+        this.events.set(name, {
+            isOnce: false,
+            fn
+        });
     }
-  }
+    once(name, fn) {
+        this.events.set(name, {
+            isOnce: true,
+            fn
+        });
+    }
+    off(name) {
+        this.events.delete(name);
+    }
+    emit(name, ...args) {
+        let cache = this.events.get(name);
+        if (cache) {
+            if (cache.isOnce) this.events.delete(name);
+            cache.fn(...args);
+        }
+    }
 }
 ```
 
 ### 原生 js 发生 http 请求
 
-最原始的方式是使用`XMLHttpRequset`:
+最原始的方式是使用 `XMLHttpRequset` :
 
 ```js
 var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function () {
-  if (xhr.readyState == 4) {
-    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-      info.innerHTML = xhr.responseText;
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+            info.innerHTML = xhr.responseText;
+        }
     }
-  }
 };
 // 每次需要发请求需要做两步：
 xhr.open("get", url, true);
 xhr.send(null);
 ```
 
-还有一种更新的方式是使用`fetch`:
+还有一种更新的方式是使用 `fetch` :
 
 ```js
 fetch("http://example.com/movies.json")
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (myJson) {
-    console.log(myJson);
-  });
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(myJson) {
+        console.log(myJson);
+    });
 ```
+
+### >>> 和 >>
+
+`>>>` 无符号移位：该操作符会将第一个操作数向右移动指定的位数。向右被移出的位被丢弃，左侧用0填充。因为符号位变成了 0，所以结果总是非负的。
+`>>` 有符号移位：该操作符会将第一个操作数向右移动指定的位数。向右被移出的位被丢弃，拷贝最左侧的位以填充左侧。
