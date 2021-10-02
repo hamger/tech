@@ -10,4 +10,3 @@
 * [safe](/safe.md)
 * [other](/other.md)
 * [open](/open.md)
-* [short](/short.md)
